@@ -18,7 +18,7 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public PageableDto<DetailedConsentDto> getConsents(String mrn, Optional<String> purposeOfUse, Optional<Long> fromProvider, Optional<Long> toProvider, Integer page, Integer size) {
+    public PageableDto<DetailedConsentDto> getConsents(String mrn, Optional<Long> purposeOfUse, Optional<Long> fromProvider, Optional<Long> toProvider, Integer page, Integer size) {
         return pcmClient.getConsents(mrn, purposeOfUse, fromProvider, toProvider, page, size);
     }
 

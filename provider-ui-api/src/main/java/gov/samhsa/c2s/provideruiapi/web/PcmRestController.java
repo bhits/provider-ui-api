@@ -27,7 +27,7 @@ public class PcmRestController {
 
     @GetMapping("/patients/{mrn}/consents")
     public PageableDto<DetailedConsentDto> getConsents(@PathVariable String mrn,
-                                                       @RequestParam(value = "purposeOfUse") Optional<String> purposeOfUse,
+                                                       @RequestParam(value = "purposeOfUse") Optional<Long> purposeOfUse,
                                                        @RequestParam(value = "fromProvider") Optional<Long> fromProvider,
                                                        @RequestParam(value = "toProvider") Optional<Long> toProvider,
                                                        @RequestParam(value = "page", required = false) Integer page,
