@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pcm")
@@ -26,9 +27,12 @@ public class PcmRestController {
 
     @GetMapping("/patients/{mrn}/consents")
     public PageableDto<DetailedConsentDto> getConsents(@PathVariable String mrn,
+                                                       @RequestParam(value = "purposeOfUse") Optional<String> purposeOfUse,
+                                                       @RequestParam(value = "fromProvider") Optional<Long> fromProvider,
+                                                       @RequestParam(value = "toProvider") Optional<Long> toProvider,
                                                        @RequestParam(value = "page", required = false) Integer page,
                                                        @RequestParam(value = "size", required = false) Integer size) {
-        return pcmService.getConsents(mrn, page, size);
+        return pcmService.getConsents(mrn, purposeOfUse, fromProvider, toProvider, page, size);
     }
 
     @GetMapping("/patients/{mrn}/consents/{consentId}")
