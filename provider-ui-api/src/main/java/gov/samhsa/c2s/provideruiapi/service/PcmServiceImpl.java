@@ -2,10 +2,12 @@ package gov.samhsa.c2s.provideruiapi.service;
 
 import gov.samhsa.c2s.provideruiapi.infrastructure.PcmClient;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PcmServiceImpl implements PcmService {
@@ -34,5 +36,15 @@ public class PcmServiceImpl implements PcmService {
     @Override
     public List<Object> getPurposes() {
         return pcmClient.getPurposes();
+    }
+
+    @Override
+    public PageableDto<Object> getConsents(String mrn, Optional<Long> purposeOfUse, Optional<Long> fromProvider, Optional<Long> toProvider, Integer page, Integer size) {
+        return pcmClient.getConsents(mrn, purposeOfUse, fromProvider, toProvider, page, size);
+    }
+
+    @Override
+    public Object getConsent(String mrn, Long consentId, String format) {
+        return pcmClient.getConsent(mrn, consentId, format);
     }
 }
