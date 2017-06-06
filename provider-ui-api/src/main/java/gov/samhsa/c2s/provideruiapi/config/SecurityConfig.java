@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.PUT, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.OPTIONS, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.GET, "/ums/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/pep/segmentDocument/**").access(hasScopes("providerUiApi.write"))
                         .anyRequest().denyAll();
             }
         };
