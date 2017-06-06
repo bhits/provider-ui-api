@@ -37,11 +37,6 @@ public class SecurityConfig {
 
                         .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("providerUiApi.read"))
 
-                        .antMatchers(HttpMethod.GET, "/pcm/**").access(hasScopes("providerUiApi.read"))
-                        .antMatchers(HttpMethod.POST, "/pcm/**").access(hasScopes("providerUiApi.write"))
-                        .antMatchers(HttpMethod.DELETE, "/pcm/**").access(hasScopes("providerUiApi.write"))
-                        .antMatchers(HttpMethod.PUT, "/pcm/**").access(hasScopes("providerUiApi.write"))
-
                         .antMatchers(HttpMethod.GET, "/ums/users/**").access(hasScopes("providerUiApi.read"))
                         .antMatchers(HttpMethod.POST, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.DELETE, "/ums/users/**").access(hasScopes("providerUiApi.write"))
