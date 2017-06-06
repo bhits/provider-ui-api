@@ -1,50 +1,42 @@
 package gov.samhsa.c2s.provideruiapi.web;
 
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.service.PcmService;
-import gov.samhsa.c2s.provideruiapi.service.dto.DetailedConsentDto;
-import gov.samhsa.c2s.provideruiapi.service.dto.PurposeDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/pcm")
 public class PcmRestController {
 
-    private final PcmService pcmService;
-
     @Autowired
-    public PcmRestController(PcmService pcmService) {
-        this.pcmService = pcmService;
+    private PcmService pcmService;
+
+    @GetMapping("/patients/{mrn}/providers")
+    public List<Object> getProviders(@PathVariable String mrn) {
+        return pcmService.getProviders(mrn);
     }
 
-    @GetMapping("/patients/{mrn}/consents")
-    public PageableDto<DetailedConsentDto> getConsents(@PathVariable String mrn,
-                                                       @RequestParam(value = "purposeOfUse") Optional<Long> purposeOfUse,
-                                                       @RequestParam(value = "fromProvider") Optional<Long> fromProvider,
-                                                       @RequestParam(value = "toProvider") Optional<Long> toProvider,
-                                                       @RequestParam(value = "page", required = false) Integer page,
-                                                       @RequestParam(value = "size", required = false) Integer size) {
-        return pcmService.getConsents(mrn, purposeOfUse, fromProvider, toProvider, page, size);
+    @PostMapping("/patients/{mrn}/providers")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveProviders(@PathVariable String mrn,
+                              @Valid @RequestBody IdentifiersDto providerIdentifiersDto) {
+        pcmService.saveProviders(mrn, providerIdentifiersDto);
     }
 
-    @GetMapping("/patients/{mrn}/consents/{consentId}")
-    public Object getConsent(@PathVariable String mrn,
-                             @PathVariable Long consentId,
-                             @RequestParam(value = "format", required = false) String format) {
-        return pcmService.getConsent(mrn, consentId, format);
+    @DeleteMapping("/patients/{mrn}/providers/{providerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProvider(@PathVariable String mrn,
+                               @PathVariable Long providerId) {
+        pcmService.deleteProvider(mrn, providerId);
     }
 
     @GetMapping("/purposes")
-    public List<PurposeDto> getPurposes() {
+    public List<Object> getPurposes() {
         return pcmService.getPurposes();
     }
-
- }
+}
