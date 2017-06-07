@@ -2,6 +2,7 @@ package gov.samhsa.c2s.provideruiapi.service.dto;
 
 
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.BaseUmsLookupDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifierSystemDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.RoleDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +21,5 @@ public class UserCreationLookupDto {
     private List<BaseUmsLookupDto> stateCodes;
     private List<BaseUmsLookupDto> countryCodes;
     private List<BaseUmsLookupDto> locales;
+    private List<IdentifierSystemDto> identifierSystems;
 }
