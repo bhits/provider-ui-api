@@ -61,9 +61,8 @@ public class PcmServiceImpl implements PcmService {
     public void saveConsent(String mrn, ConsentDto consentDto, Locale locale) {
         // Get current user authId
         String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        String lastUpdatedBy = createdBy;
 
-        pcmClient.saveConsent(mrn, consentDto, locale, createdBy, lastUpdatedBy);
+        pcmClient.saveConsent(mrn, consentDto, locale, createdBy);
     }
 
     @Override
