@@ -5,6 +5,7 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,4 +52,9 @@ public interface PcmClient {
                      @Valid @RequestBody ConsentDto consentDto, @RequestHeader("Accept-Language") Locale locale,
                      @RequestParam(value = "createdBy") String createdBy,
                      @RequestParam(value = "lastUpdatedBy") String lastUpdatedBy);
+
+    @PutMapping("/consents/{consentId}")
+    void updateConsent(@PathVariable String patientId, @PathVariable Long consentId,
+                              @Valid @RequestBody ConsentDto consentDto,
+                              @RequestParam(value = "lastUpdatedBy") String lastUpdatedBy);
 }
