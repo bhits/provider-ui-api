@@ -30,10 +30,10 @@ public class SecurityConfig {
                     http.requiresChannel().anyRequest().requiresSecure();
                 }
                 http.authorizeRequests()
-                        .antMatchers(HttpMethod.GET, "/pcm/**").access(hasScopes("c2sUiApi.read"))
-                        .antMatchers(HttpMethod.POST, "/pcm/**").access(hasScopes("c2sUiApi.write"))
-                        .antMatchers(HttpMethod.DELETE, "/pcm/**").access(hasScopes("c2sUiApi.write"))
-                        .antMatchers(HttpMethod.PUT, "/pcm/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.GET, "/pcm/**").access(hasScopes("providerUiApi.read"))
+                        .antMatchers(HttpMethod.POST, "/pcm/**").access(hasScopes("providerUiApi.write"))
+                        .antMatchers(HttpMethod.DELETE, "/pcm/**").access(hasScopes("providerUiApi.write"))
+                        .antMatchers(HttpMethod.PUT, "/pcm/**").access(hasScopes("providerUiApi.write"))
 
                         .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("providerUiApi.read"))
 

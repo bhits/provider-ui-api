@@ -88,4 +88,10 @@ public class PcmRestController {
                               @Valid @RequestBody ConsentDto consentDto) {
         pcmService.updateConsent(patientId, consentId, consentDto);
     }
+
+    @DeleteMapping("/patients/{mrn}/consents/{consentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteConsent(@PathVariable String mrn, @PathVariable Long consentId) {
+        pcmService.deleteConsent(mrn, consentId);
+    }
 }
