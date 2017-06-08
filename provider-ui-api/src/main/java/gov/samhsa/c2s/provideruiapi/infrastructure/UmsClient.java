@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.provideruiapi.infrastructure;
 
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.BaseUmsLookupDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.UmsUserDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -48,4 +49,7 @@ public interface UmsClient {
 
     @RequestMapping(value = "/users/{userId}/enabled", method = RequestMethod.PUT)
     void enableUser(@PathVariable("userId") Long userId);
+
+    @RequestMapping(value = "/locales", method = RequestMethod.GET)
+    List<BaseUmsLookupDto> getLocales();
 }
