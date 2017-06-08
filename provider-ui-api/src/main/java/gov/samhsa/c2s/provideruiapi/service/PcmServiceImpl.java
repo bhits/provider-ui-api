@@ -81,4 +81,14 @@ public class PcmServiceImpl implements PcmService {
         //TODO: Assert the current provider is authorized to manage consents for mrn
         pcmClient.deleteConsent(mrn, consentId);
     }
+
+    @Override
+    public Object getAttestedConsent(String mrn, Long consentId, String format) {
+        return pcmClient.getAttestedConsent(mrn, consentId, format);
+    }
+
+    @Override
+    public Object getRevokedConsent(String mrn, Long consentId, String format) {
+        return pcmClient.getRevokedConsent(mrn, consentId, format);
+    }
 }

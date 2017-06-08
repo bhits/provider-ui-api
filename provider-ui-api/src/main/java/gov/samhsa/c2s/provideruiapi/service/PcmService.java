@@ -26,4 +26,8 @@ public interface PcmService {
     void updateConsent(String patientId, Long consentId, ConsentDto consentDto);
 
     void deleteConsent(String mrn, Long consentId);
+
+    Object getAttestedConsent(String mrn, Long consentId, String format);
+
+    Object getRevokedConsent(String mrn, Long consentId, String format);
 }
