@@ -79,7 +79,10 @@ public class PcmServiceImpl implements PcmService {
     @Override
     public void deleteConsent(String mrn, Long consentId) {
         //TODO: Assert the current provider is authorized to manage consents for mrn
-        pcmClient.deleteConsent(mrn, consentId);
+
+        // Get current user authId
+        String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        pcmClient.deleteConsent(mrn, consentId, lastUpdatedBy);
     }
 
     @Override
