@@ -65,4 +65,9 @@ public class PcmServiceImpl implements PcmService {
 
         pcmClient.saveConsent(mrn, consentDto, locale, createdBy, lastUpdatedBy);
     }
+
+    @Override
+    public void deleteConsent(String mrn, Long consentId) {
+        pcmClient.deleteConsent(mrn, consentId);
+    }
 }

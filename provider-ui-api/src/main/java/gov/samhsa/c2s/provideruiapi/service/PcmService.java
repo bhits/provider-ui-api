@@ -22,4 +22,6 @@ public interface PcmService {
     Object getConsent(String mrn, Long consentId, String format);
 
     void saveConsent(String mrn, ConsentDto consentDto, Locale locale);
+
+    void deleteConsent(String mrn, Long consentId);
 }
