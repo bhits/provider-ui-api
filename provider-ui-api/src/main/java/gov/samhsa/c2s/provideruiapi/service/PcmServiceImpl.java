@@ -59,6 +59,7 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public void saveConsent(String mrn, ConsentDto consentDto, Locale locale) {
+        //TODO: Assert the current provider is authorized to manage consents for mrn
         // Get current user authId
         String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
 
@@ -67,6 +68,8 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public void updateConsent(String patientId, Long consentId, ConsentDto consentDto) {
+        //TODO: Assert the current provider is authorized to manage consents for mrn
+
         // Get current user authId
         String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
         pcmClient.updateConsent(patientId, consentId, consentDto, lastUpdatedBy);
@@ -75,6 +78,7 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public void deleteConsent(String mrn, Long consentId) {
+        //TODO: Assert the current provider is authorized to manage consents for mrn
         pcmClient.deleteConsent(mrn, consentId);
     }
 }

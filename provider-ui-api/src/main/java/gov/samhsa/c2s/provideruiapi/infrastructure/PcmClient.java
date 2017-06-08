@@ -4,8 +4,8 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 @FeignClient("pcm")
+@Service
 public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/providers", method = RequestMethod.GET)
@@ -49,13 +50,15 @@ public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.POST)
     void saveConsent(@PathVariable("patientId") String patientId,
-                     @Valid @RequestBody ConsentDto consentDto, @RequestHeader("Accept-Language") Locale locale,
+                     @Valid @RequestBody ConsentDto consentDto,
+                     @RequestHeader("Accept-Language") Locale locale,
                      @RequestParam(value = "createdBy") String createdBy);
 
-    @PutMapping("/consents/{consentId}")
-    void updateConsent(@PathVariable String patientId, @PathVariable Long consentId,
-                              @Valid @RequestBody ConsentDto consentDto,
-                              @RequestParam(value = "lastUpdatedBy") String lastUpdatedBy);
+    @RequestMapping(value ="/patients/{patientId}/consents/{consentId}", method = RequestMethod.PUT)
+    void updateConsent(@PathVariable("patientId") String patientId,
+                       @PathVariable("consentId") Long consentId,
+                       @Valid @RequestBody ConsentDto consentDto,
+                       @RequestParam(value = "lastUpdatedBy") String lastUpdatedBy);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.DELETE)
     void deleteConsent(@PathVariable("patientId") String patientId,
