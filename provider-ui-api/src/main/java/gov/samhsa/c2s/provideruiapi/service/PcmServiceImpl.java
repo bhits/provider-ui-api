@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
 public class PcmServiceImpl implements PcmService {
@@ -46,9 +45,9 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public PageableDto<Object> getConsents(String mrn, Optional<Long> purposeOfUse, Optional<Long> fromProvider, Optional<Long> toProvider, Integer page, Integer size) {
+    public PageableDto<Object> getConsents(String mrn, Integer page, Integer size) {
         //TODO: Assert the current provider is authorized to manage consents for mrn
-        return pcmClient.getConsents(mrn, purposeOfUse, fromProvider, toProvider, page, size);
+        return pcmClient.getConsents(mrn, page, size);
     }
 
     @Override
