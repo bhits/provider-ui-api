@@ -37,6 +37,8 @@ public class SecurityConfig {
 
                         .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("providerUiApi.read"))
 
+                        .antMatchers(HttpMethod.GET, "/vss/**").access(hasScopes("providerUiApi.read"))
+
                         .antMatchers(HttpMethod.GET, "/ums/users/**").access(hasScopes("providerUiApi.read"))
                         .antMatchers(HttpMethod.POST, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.DELETE, "/ums/users/**").access(hasScopes("providerUiApi.write"))
