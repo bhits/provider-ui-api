@@ -22,7 +22,7 @@ public interface PcmService {
 
     void saveConsent(String mrn, ConsentDto consentDto, Locale locale);
 
-    void updateConsent(String patientId, Long consentId, ConsentDto consentDto);
+    void updateConsent(String mrn, Long consentId, ConsentDto consentDto);
 
     void deleteConsent(String mrn, Long consentId);
 

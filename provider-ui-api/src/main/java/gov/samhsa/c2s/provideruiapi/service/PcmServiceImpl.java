@@ -66,12 +66,12 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public void updateConsent(String patientId, Long consentId, ConsentDto consentDto) {
+    public void updateConsent(String mrn, Long consentId, ConsentDto consentDto) {
         //TODO: Assert the current provider is authorized to manage consents for mrn
 
         // Get current user authId
         String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        pcmClient.updateConsent(patientId, consentId, consentDto, lastUpdatedBy);
+        pcmClient.updateConsent(mrn, consentId, consentDto, lastUpdatedBy);
 
     }
 

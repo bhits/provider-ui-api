@@ -92,11 +92,11 @@ public class PcmRestController {
         pcmService.saveConsent(mrn, consentDto, locale);
     }
 
-    @PutMapping("/consents/{consentId}")
+    @PutMapping("/patients/{mrn}/consents/{consentId}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateConsent(@PathVariable String patientId, @PathVariable Long consentId,
+    public void updateConsent(@PathVariable String mrn, @PathVariable Long consentId,
                               @Valid @RequestBody ConsentDto consentDto) {
-        pcmService.updateConsent(patientId, consentId, consentDto);
+        pcmService.updateConsent(mrn, consentId, consentDto);
     }
 
     @DeleteMapping("/patients/{mrn}/consents/{consentId}")
