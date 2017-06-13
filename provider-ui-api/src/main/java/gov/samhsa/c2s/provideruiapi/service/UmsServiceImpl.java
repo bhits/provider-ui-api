@@ -92,9 +92,8 @@ public class UmsServiceImpl implements UmsService {
                 .userLocale("en")
                 .supportedLocales(supportedLocales)
                 .username("")
-                .firstName("provider")
-                .lastName("consent2share")
-                .mrn("C2S-DEV-24GBLI")
+                .firstName("Bob")
+                .lastName("Provider")
                 .build();
     }
 }

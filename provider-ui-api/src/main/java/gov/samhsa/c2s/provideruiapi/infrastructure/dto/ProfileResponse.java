@@ -17,5 +17,4 @@ public class ProfileResponse {
     private String username;
     private String lastName;
     private String firstName;
-    private String mrn;
 }

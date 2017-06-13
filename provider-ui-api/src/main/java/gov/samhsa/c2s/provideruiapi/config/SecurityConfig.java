@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.OPTIONS, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.POST, "/pep/segmentDocument/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.GET, "/ums/providers/profile/**").access(hasScopes("providerUiApi.read"))
+                        .antMatchers(HttpMethod.GET, "/pls/providers/npi/**").access(hasScopes("providerUiApi.read"))
                         .antMatchers(HttpMethod.GET, "/ums/userCreationLookupInfo/**").permitAll()
                         .anyRequest().denyAll();
             }
