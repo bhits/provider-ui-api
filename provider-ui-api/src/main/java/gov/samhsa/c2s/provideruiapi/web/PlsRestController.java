@@ -1,8 +1,13 @@
 package gov.samhsa.c2s.provideruiapi.web;
 
 import gov.samhsa.c2s.provideruiapi.infrastructure.PlsClient;
+import gov.samhsa.c2s.provideruiapi.service.dto.ProviderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static gov.samhsa.c2s.provideruiapi.infrastructure.PlsClient.*;
 
@@ -33,5 +38,33 @@ public class PlsRestController {
             @RequestHeader(X_FORWARDED_PORT) int xForwardedPort) {
         return plsClient.searchProviders(state, city, zipCode, firstName, lastName, genderCode,
                 orgName, phone, page, size, sort, projection, xForwardedProto, xForwardedHost, xForwardedPrefix.concat("/pls"), xForwardedPort);
+    }
+
+    @GetMapping("/providers/{npi}")
+    public List<ProviderDto> searchProviderByNpi(@PathVariable String npi) {
+        List<ProviderDto> providers  =  new ArrayList<>();
+
+        ProviderDto providerDto = new ProviderDto();
+        providerDto.setId("11111111");
+        providerDto.setFirstName("MICHAEL1");
+        providerDto.setLastName("KEMMER1");
+        providerDto.setMiddleName(null);
+        providerDto.setProviderType("PRACTITIONER");
+        providerDto.setDeletable(false);
+
+        ProviderDto providerDto1 = new ProviderDto();
+        providerDto1.setId("11112222");
+        providerDto1.setFirstName("MICHAEL2");
+        providerDto1.setLastName("KEMMER2");
+        providerDto1.setMiddleName(null);
+        providerDto1.setProviderType("PRACTITIONER");
+        providerDto1.setDeletable(false);
+
+       if(providerDto1.getId().equals(npi)){
+           providers.add(providerDto1);
+       }else if(providerDto.getId().equals(npi)){
+           providers.add(providerDto);
+       }
+        return providers;
     }
 }
