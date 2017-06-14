@@ -3,13 +3,21 @@ package gov.samhsa.c2s.provideruiapi.web;
 import gov.samhsa.c2s.provideruiapi.infrastructure.PlsClient;
 import gov.samhsa.c2s.provideruiapi.service.dto.ProviderDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static gov.samhsa.c2s.provideruiapi.infrastructure.PlsClient.*;
+import static gov.samhsa.c2s.provideruiapi.infrastructure.PlsClient.Projection;
+import static gov.samhsa.c2s.provideruiapi.infrastructure.PlsClient.X_FORWARDED_HOST;
+import static gov.samhsa.c2s.provideruiapi.infrastructure.PlsClient.X_FORWARDED_PORT;
+import static gov.samhsa.c2s.provideruiapi.infrastructure.PlsClient.X_FORWARDED_PREFIX;
+import static gov.samhsa.c2s.provideruiapi.infrastructure.PlsClient.X_FORWARDED_PROTO;
 
 @RestController
 @RequestMapping("/pls")
@@ -42,7 +50,7 @@ public class PlsRestController {
 
     @GetMapping("/providers/{npi}")
     public List<ProviderDto> searchProviderByNpi(@PathVariable String npi) {
-        List<ProviderDto> providers  =  new ArrayList<>();
+        List<ProviderDto> providers = new ArrayList<>();
 
         ProviderDto providerDto = new ProviderDto();
         providerDto.setId("11111111");
@@ -60,11 +68,11 @@ public class PlsRestController {
         providerDto1.setProviderType("PRACTITIONER");
         providerDto1.setDeletable(false);
 
-       if(providerDto1.getId().equals(npi)){
-           providers.add(providerDto1);
-       }else if(providerDto.getId().equals(npi)){
-           providers.add(providerDto);
-       }
+        if (providerDto1.getId().equals(npi)) {
+            providers.add(providerDto1);
+        } else if (providerDto.getId().equals(npi)) {
+            providers.add(providerDto);
+        }
         return providers;
     }
 }
