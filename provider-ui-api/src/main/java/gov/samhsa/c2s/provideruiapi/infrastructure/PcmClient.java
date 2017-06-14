@@ -58,7 +58,8 @@ public interface PcmClient {
     void saveConsent(@PathVariable("patientId") String patientId,
                      @Valid @RequestBody ConsentDto consentDto,
                      @RequestHeader("Accept-Language") Locale locale,
-                     @RequestParam(value = "createdBy") String createdBy);
+                     @RequestParam(value = "createdBy") String createdBy,
+                     @RequestParam(value = "createdByPatient") boolean createdByPatient);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.PUT)
     void updateConsent(@PathVariable("patientId") String patientId,
