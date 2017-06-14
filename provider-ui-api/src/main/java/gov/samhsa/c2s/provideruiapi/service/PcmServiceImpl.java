@@ -15,6 +15,7 @@ import java.util.Locale;
 public class PcmServiceImpl implements PcmService {
     private final PcmClient pcmClient;
     private final JwtTokenExtractor jwtTokenExtractor;
+    private static final boolean CREATED_BY_PATIENT = false;
 
     @Autowired
     public PcmServiceImpl(PcmClient pcmClient, JwtTokenExtractor jwtTokenExtractor) {
@@ -57,7 +58,7 @@ public class PcmServiceImpl implements PcmService {
         // Get current user authId
         String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
 
-        pcmClient.saveConsent(mrn, consentDto, locale, createdBy, false);
+        pcmClient.saveConsent(mrn, consentDto, locale, createdBy, CREATED_BY_PATIENT);
     }
 
     @Override
