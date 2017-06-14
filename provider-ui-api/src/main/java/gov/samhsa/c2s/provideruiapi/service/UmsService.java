@@ -1,6 +1,7 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ProfileResponse;
 import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface UmsService {
     void disableUser(Long userId);
 
     void enableUser(Long userId);
+
+    ProfileResponse getProviderProfile();
 }

@@ -1,7 +1,9 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
 import gov.samhsa.c2s.provideruiapi.infrastructure.UmsClient;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.BaseUmsLookupDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ProfileResponse;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.UmsUserDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
 import org.modelmapper.ModelMapper;
@@ -78,5 +80,20 @@ public class UmsServiceImpl implements UmsService {
     @Override
     public void enableUser(Long userId) {
         umsClient.enableUser(userId);
+    }
+
+
+    @Override
+    public ProfileResponse getProviderProfile() {
+        //Get system supported Locales
+        List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();
+        // TODO Implement get Provider profile from DB
+        return ProfileResponse.builder()
+                .userLocale("en")
+                .supportedLocales(supportedLocales)
+                .username("")
+                .firstName("Bob")
+                .lastName("Provider")
+                .build();
     }
 }

@@ -27,8 +27,12 @@ import static gov.samhsa.c2s.provideruiapi.infrastructure.UmsClient.X_FORWARDED_
 @RequestMapping("ums/users")
 public class UmsRestController {
 
+    private final UmsService umsService;
+
     @Autowired
-    private UmsService umsService;
+    public UmsRestController(UmsService umsService) {
+        this.umsService = umsService;
+    }
 
     @GetMapping
     public PageableDto<UserDto> getUsers(@RequestParam(value = "page", required = false) Integer page,
