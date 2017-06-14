@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
 public class PcmServiceImpl implements PcmService {
@@ -46,9 +45,9 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public PageableDto<Object> getConsents(String mrn, Optional<Long> purposeOfUse, Optional<Long> fromProvider, Optional<Long> toProvider, Integer page, Integer size) {
+    public PageableDto<Object> getConsents(String mrn, Integer page, Integer size) {
         //TODO: Assert the current provider is authorized to manage consents for mrn
-        return pcmClient.getConsents(mrn, purposeOfUse, fromProvider, toProvider, page, size);
+        return pcmClient.getConsents(mrn, page, size);
     }
 
     @Override
@@ -67,18 +66,31 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public void updateConsent(String patientId, Long consentId, ConsentDto consentDto) {
+    public void updateConsent(String mrn, Long consentId, ConsentDto consentDto) {
         //TODO: Assert the current provider is authorized to manage consents for mrn
 
         // Get current user authId
         String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        pcmClient.updateConsent(patientId, consentId, consentDto, lastUpdatedBy);
+        pcmClient.updateConsent(mrn, consentId, consentDto, lastUpdatedBy);
 
     }
 
     @Override
     public void deleteConsent(String mrn, Long consentId) {
         //TODO: Assert the current provider is authorized to manage consents for mrn
-        pcmClient.deleteConsent(mrn, consentId);
+
+        // Get current user authId
+        String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        pcmClient.deleteConsent(mrn, consentId, lastUpdatedBy);
+    }
+
+    @Override
+    public Object getAttestedConsent(String mrn, Long consentId, String format) {
+        return pcmClient.getAttestedConsent(mrn, consentId, format);
+    }
+
+    @Override
+    public Object getRevokedConsent(String mrn, Long consentId, String format) {
+        return pcmClient.getRevokedConsent(mrn, consentId, format);
     }
 }

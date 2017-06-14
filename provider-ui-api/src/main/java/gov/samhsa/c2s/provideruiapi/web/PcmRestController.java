@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/pcm")
@@ -60,12 +59,9 @@ public class PcmRestController {
 
     @GetMapping("/patients/{mrn}/consents")
     public PageableDto<Object> getConsents(@PathVariable String mrn,
-                                           @RequestParam(value = "purposeOfUse") Optional<Long> purposeOfUse,
-                                           @RequestParam(value = "fromProvider") Optional<Long> fromProvider,
-                                           @RequestParam(value = "toProvider") Optional<Long> toProvider,
                                            @RequestParam(value = "page", required = false) Integer page,
                                            @RequestParam(value = "size", required = false) Integer size) {
-        return pcmService.getConsents(mrn, purposeOfUse, fromProvider, toProvider, page, size);
+        return pcmService.getConsents(mrn, page, size);
     }
 
     @GetMapping("/patients/{mrn}/consents/{consentId}")
@@ -75,6 +71,20 @@ public class PcmRestController {
         return pcmService.getConsent(mrn, consentId, format);
     }
 
+    @GetMapping("/patients/{mrn}/consents/{consentId}/attestation")
+    public Object getAttestedConsent(@PathVariable String mrn,
+                                     @PathVariable Long consentId,
+                                     @RequestParam(required = false) String format) {
+        return pcmService.getAttestedConsent(mrn, consentId, format);
+    }
+
+    @GetMapping("/patients/{mrn}/consents/{consentId}/revocation")
+    public Object getRevokedConsent(@PathVariable String mrn,
+                                    @PathVariable Long consentId,
+                                    @RequestParam(required = false) String format) {
+        return pcmService.getRevokedConsent(mrn, consentId, format);
+    }
+
     @PostMapping("/patients/{mrn}/consents")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveConsent(@PathVariable String mrn,
@@ -82,11 +92,11 @@ public class PcmRestController {
         pcmService.saveConsent(mrn, consentDto, locale);
     }
 
-    @PutMapping("/consents/{consentId}")
+    @PutMapping("/patients/{mrn}/consents/{consentId}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateConsent(@PathVariable String patientId, @PathVariable Long consentId,
+    public void updateConsent(@PathVariable String mrn, @PathVariable Long consentId,
                               @Valid @RequestBody ConsentDto consentDto) {
-        pcmService.updateConsent(patientId, consentId, consentDto);
+        pcmService.updateConsent(mrn, consentId, consentDto);
     }
 
     @DeleteMapping("/patients/{mrn}/consents/{consentId}")
