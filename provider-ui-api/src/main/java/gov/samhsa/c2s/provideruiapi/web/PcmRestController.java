@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.provideruiapi.web;
 
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.service.PcmService;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,14 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/pcm")
 public class PcmRestController {
 
+    private final PcmService pcmService;
+
     @Autowired
-    private PcmService pcmService;
+    public PcmRestController(PcmService pcmService) {
+        this.pcmService = pcmService;
+    }
 
     @GetMapping("/patients/{mrn}/providers")
     public List<Object> getProviders(@PathVariable String mrn) {
@@ -65,5 +73,25 @@ public class PcmRestController {
                              @PathVariable Long consentId,
                              @RequestParam(value = "format", required = false) String format) {
         return pcmService.getConsent(mrn, consentId, format);
+    }
+
+    @PostMapping("/patients/{mrn}/consents")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveConsent(@PathVariable String mrn,
+                            @Valid @RequestBody ConsentDto consentDto, @RequestHeader("Accept-Language") Locale locale) {
+        pcmService.saveConsent(mrn, consentDto, locale);
+    }
+
+    @PutMapping("/consents/{consentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateConsent(@PathVariable String patientId, @PathVariable Long consentId,
+                              @Valid @RequestBody ConsentDto consentDto) {
+        pcmService.updateConsent(patientId, consentId, consentDto);
+    }
+
+    @DeleteMapping("/patients/{mrn}/consents/{consentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteConsent(@PathVariable String mrn, @PathVariable Long consentId) {
+        pcmService.deleteConsent(mrn, consentId);
     }
 }
