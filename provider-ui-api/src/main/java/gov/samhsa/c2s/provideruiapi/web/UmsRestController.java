@@ -1,6 +1,7 @@
 package gov.samhsa.c2s.provideruiapi.web;
 
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ProfileResponse;
 import gov.samhsa.c2s.provideruiapi.service.UmsService;
 import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ProfileResponse;
 
 import javax.validation.Valid;
 import java.util.List;
