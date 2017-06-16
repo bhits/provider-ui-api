@@ -1,20 +1,15 @@
 package gov.samhsa.c2s.provideruiapi.web;
 
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
-import gov.samhsa.c2s.provideruiapi.service.UmsService;
 import gov.samhsa.c2s.provideruiapi.service.dto.SegmentedDocument;
-import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
-import java.util.List;
-
-import static gov.samhsa.c2s.provideruiapi.infrastructure.UmsClient.*;
 
 @RestController
 @RequestMapping("pep")
@@ -30,14 +25,14 @@ public class PepRestController {
                              @RequestParam(value = "patientIdRoot") String patientIdRoot,
                              @RequestParam(value = "patientIdExtension") String patientIdExtension,
                              @RequestParam(value = "documentEncoding") String documentEncoding) {
-        SegmentedDocument SegmentedDocument = new SegmentedDocument();
+        SegmentedDocument segmentedDocument = new SegmentedDocument();
         try {
-            SegmentedDocument.setDocument(file.getBytes());
+            segmentedDocument.setDocument(file.getBytes());
         } catch (Exception e) {
             logger.warn( e.getMessage());
         }
 
-        return SegmentedDocument;
+        return segmentedDocument;
     }
 
 }
