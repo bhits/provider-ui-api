@@ -1,6 +1,8 @@
 package gov.samhsa.c2s.provideruiapi.infrastructure;
 
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,4 +37,8 @@ public interface PlsClient {
     interface Projection {
         String FLATTEN_SMALL_PROVIDER = "FlattenSmallProvider";
     }
+
+    @RequestMapping(value = "/providers/{npi}", method = RequestMethod.GET)
+    FlattenedSmallProviderDto searchByNpi(@PathVariable("npi") String npi);
+
 }
