@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class PepServiceImpl implements PepService {
@@ -36,11 +37,12 @@ public class PepServiceImpl implements PepService {
             xacmlRequestDto.setIntermediaryNpi(intermediaryNpi);
             xacmlRequestDto.setRecipientNpi(recipientNpi);
             xacmlRequestDto.setPatientId(new PatientIdDto(patientIdRoot, patientIdExtension));
-           // xacmlRequestDto.getPurposeOfUse(new SubjectPurposeOfUse.valueOf(purposeOfUse))
+            xacmlRequestDto.setPurposeOfUse(SubjectPurposeOfUse.fromPurposeFhir(purposeOfUse));
+            accessRequest.setXacmlRequest(xacmlRequestDto);
+            accessRequest.setDocumentEncoding(Optional.of(documentEncoding));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return pepClient.access(accessRequest);
     }
 }
