@@ -2,6 +2,7 @@ package gov.samhsa.c2s.provideruiapi.web;
 
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.AccessRequestDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.AccessResponseDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.XacmlRequestDto;
 import gov.samhsa.c2s.provideruiapi.service.PepService;
 import gov.samhsa.c2s.provideruiapi.service.dto.SegmentedDocument;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 
 @RestController
@@ -41,6 +43,7 @@ public class PepRestController {
                              @RequestParam(value = "documentEncoding") String documentEncoding) {
         SegmentedDocument segmentedDocument = new SegmentedDocument();
         try {
+
             segmentedDocument.setDocument(file.getBytes());
         } catch (Exception e) {
             log.warn( e.getMessage());
@@ -50,8 +53,15 @@ public class PepRestController {
     }
 
     @RequestMapping(value = "/access", method = RequestMethod.POST)
-    public AccessResponseDto access(@Valid @RequestBody AccessRequestDto accessRequest, Principal principal) {
-        return pepService.accessDocument(accessRequest);
+    public AccessResponseDto access(@RequestParam(value = "file") MultipartFile file,
+                                    @RequestParam(value = "recipientNpi") String recipientNpi,
+                                    @RequestParam(value = "intermediaryNpi") String intermediaryNpi,
+                                    @RequestParam(value = "purposeOfUse") String purposeOfUse,
+                                    @RequestParam(value = "patientIdRoot") String patientIdRoot,
+                                    @RequestParam(value = "patientIdExtension") String patientIdExtension,
+                                    @RequestParam(value = "documentEncoding") String documentEncoding) {
+
+        return pepService.accessDocument( file, recipientNpi,intermediaryNpi, purposeOfUse, patientIdRoot, patientIdExtension,documentEncoding);
     }
 
 
