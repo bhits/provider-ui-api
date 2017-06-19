@@ -1,5 +1,7 @@
-package gov.samhsa.c2s.provideruiapi.infrastructure.dto;
+package gov.samhsa.c2s.provideruiapi.infrastructure;
 
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.AccessRequestDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.AccessResponseDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
