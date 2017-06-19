@@ -3,10 +3,10 @@ package gov.samhsa.c2s.provideruiapi.service;
 
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
+import gov.samhsa.c2s.provideruiapi.infrastructure.PepClient;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.AccessRequestDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.AccessResponseDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PatientIdDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PepClient;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.SubjectPurposeOfUse;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.XacmlRequestDto;
 import gov.samhsa.c2s.provideruiapi.service.exception.NoDocumentFoundException;
@@ -36,6 +36,8 @@ public class PepServiceImpl implements PepService {
                                             String patientIdRoot,
                                             String patientIdExtension,
                                             String documentEncoding) {
+        log.debug("PEP Service accessDocument Start");
+        AccessResponseDto accessResponseDto;
         AccessRequestDto accessRequest = new AccessRequestDto();
         try {
             accessRequest.setDocument(file.getBytes());
@@ -46,14 +48,9 @@ public class PepServiceImpl implements PepService {
             xacmlRequestDto.setPurposeOfUse(SubjectPurposeOfUse.fromPurposeFhir(purposeOfUse));
             accessRequest.setXacmlRequest(xacmlRequestDto);
             accessRequest.setDocumentEncoding(Optional.of(documentEncoding));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        AccessResponseDto accessResponseDto;
-        try {
+            log.debug("Invoking pep feign client - Start");
             accessResponseDto = pepClient.access(accessRequest);
-
+            log.debug("Invoking pep feign client - End");
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
@@ -76,7 +73,13 @@ public class PepServiceImpl implements PepService {
                             "with" +
                             " PEP service");
             }
+        } catch (IOException e) {
+            log.error("Unable to Read the input file content", e);
+            throw new PepClientInterfaceException("Unable to Read the input file content");
         }
+
+        log.debug("PEP Service accessDocument End");
         return accessResponseDto;
+
     }
 }
