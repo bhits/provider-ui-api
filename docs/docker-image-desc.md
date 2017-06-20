@@ -12,15 +12,15 @@ The Provider User Interface API (provider-ui-api) is a Backend For Frontend (BFF
 
 For more information about this image, the source code, and its history, please see the [GitHub repository](https://github.com/bhits-dev/provider-ui-api).
 
-# What is PROVIDER-UI-API?
+# What is the provider-ui API?
 
-The Provider User Interface API (provider-ui-api) is a Backend For Frontend (BFF) component of Consent2Share (C2S)
+The Provider User Interface API (provider-ui-api) is a Backend For Frontend (BFF) component of Consent2Share.
 
 For more information and related downloads for Consent2Share, please visit [Consent2Share](https://bhits.github.io/consent2share/).
 
 # How to Use This Image
 
-## Start a PROVIDER-UI-API Instance
+## Start a provider-ui-API Instance
 
 Be sure to familiarize yourself with the repository's [README.md](https://github.com/bhits-dev/provider-ui-api) file before starting the instance.
 

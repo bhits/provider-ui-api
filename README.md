@@ -1,6 +1,6 @@
 # Provider User Interface API
 
-The Provider User Interface API (provider-ui-api) is a Backend For Frontend(BFF) component of Consent2Share
+The Provider User Interface API (provider-ui-api) is a Backend For Frontend (BFF) component of Consent2Share
 
 ## Build
 
@@ -66,7 +66,7 @@ services:
 
 ### Enable SSL
 
-For simplicity in development and testing environments, SSL is **NOT** enabled by default configuration. SSL can easily be enabled following the examples below:
+For simplicity in development and testing environments, SSL is **NOT** enabled by default configuration. SSL can be easily enabled by following the examples below:
 
 #### Enable SSL While Running as a JAR
 
