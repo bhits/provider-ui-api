@@ -16,7 +16,7 @@ For more information about this image, the source code, and its history, please 
 
 The Provider User Interface API (provider-ui-api) is a Backend For Frontend (BFF) component of Consent2Share.
 
-For more information and related downloads for Consent2Share, please visit [Consent2Share](https://bhits.github.io/consent2share/).
+For more information and related downloads for Consent2Share, please visit [Consent2Share](https://bhits-dev.github.io/consent2share/).
 
 # How to Use This Image
 
