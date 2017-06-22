@@ -24,7 +24,7 @@ public interface UmsClient {
                                         @RequestParam(value = "size", required = false) Integer size);
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    void registerUser(@RequestBody UmsUserDto umsUserDto);
+    UmsUserDto registerUser(@RequestBody UmsUserDto umsUserDto);
 
     @RequestMapping(value = "/users/search", method = RequestMethod.GET)
     List<UmsUserDto> searchUsersByFirstNameAndORLastName(@RequestParam("term") String term);

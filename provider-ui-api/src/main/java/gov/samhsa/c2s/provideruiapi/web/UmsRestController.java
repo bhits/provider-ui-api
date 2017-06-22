@@ -42,8 +42,8 @@ public class UmsRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerUser(@Valid @RequestBody UserDto userDto) {
-        umsService.registerUser(userDto);
+    public UserDto registerUser(@Valid @RequestBody UserDto userDto) {
+        return umsService.registerUser(userDto);
     }
 
     @GetMapping("/search")

@@ -41,8 +41,8 @@ public class UmsServiceImpl implements UmsService {
     }
 
     @Override
-    public void registerUser(UserDto userDto) {
-        umsClient.registerUser(modelMapper.map(userDto, UmsUserDto.class));
+    public UserDto registerUser(UserDto userDto) {
+        return modelMapper.map(umsClient.registerUser(modelMapper.map(userDto, UmsUserDto.class)), UserDto.class);
     }
 
     @Override

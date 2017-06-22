@@ -9,7 +9,7 @@ import java.util.List;
 public interface UmsService {
     PageableDto<UserDto> getAllUsers(Integer page, Integer size);
 
-    void registerUser(UserDto userDto);
+    UserDto registerUser(UserDto userDto);
 
     List<UserDto> searchUsersByFirstNameAndORLastName(String term);
 
