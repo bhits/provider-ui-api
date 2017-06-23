@@ -1,6 +1,8 @@
 package gov.samhsa.c2s.provideruiapi.web;
 
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.service.PcmService;
@@ -103,5 +105,29 @@ public class PcmRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteConsent(@PathVariable String mrn, @PathVariable Long consentId) {
         pcmService.deleteConsent(mrn, consentId);
+    }
+
+    @PutMapping("/patients/{mrn}/consents/{consentId}/attestation")
+    @ResponseStatus(HttpStatus.OK)
+    public void attestConsent(@PathVariable String mrn, @PathVariable Long consentId,
+                              @Valid @RequestBody ConsentAttestationDto consentAttestationDto) {
+        pcmService.attestConsent(mrn, consentId, consentAttestationDto);
+    }
+
+    @PutMapping("/patients/{mrn}/consents/{consentId}/revocation")
+    @ResponseStatus(HttpStatus.OK)
+    public void revokeConsent(@PathVariable String mrn, @PathVariable Long consentId,
+                              @Valid @RequestBody ConsentRevocationDto consentRevocationDto) {
+        pcmService.revokeConsent(mrn, consentId, consentRevocationDto);
+    }
+
+    @GetMapping("/consentAttestationTerm")
+    public Object getConsentAttestationTerm(@RequestParam(value = "id", required = false) Long id, @RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getConsentAttestationTerm(id,locale);
+    }
+
+    @GetMapping("/consentRevocationTerm")
+    public Object getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id, @RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getConsentRevocationTerm(id,locale);
     }
 }
