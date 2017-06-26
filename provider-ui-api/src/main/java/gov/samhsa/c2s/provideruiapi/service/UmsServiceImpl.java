@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UmsServiceImpl implements UmsService {
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
     @Autowired
     private UmsClient umsClient;
 
@@ -100,20 +102,26 @@ public class UmsServiceImpl implements UmsService {
 
 
     @Override
-    public PageableDto<UserDto> searchUsersByDemographic( String firstName,
-                                                          String lastName,
-                                                          LocalDate birthDate,
-                                                          String genderCode,
-                                                          Integer page,
-                                                          Integer size) {
+    public PageableDto<UserDto> searchUsersByDemographic(String firstName,
+                                                         String lastName,
+                                                         LocalDate birthDate,
+                                                         String genderCode,
+                                                         Integer page,
+                                                         Integer size) {
         //Mapping of generic parameterized types
         Type pageableUserDtoType = new TypeToken<PageableDto<UserDto>>() {
         }.getType();
 
+        StringBuilder formatBirthday = new StringBuilder();
+        if(birthDate!=null) {
+            DateTimeFormatter formatters = DateTimeFormatter.ofPattern(DATE_FORMAT);
+            formatBirthday.append(birthDate.format(formatters));
+        }
+
         PageableDto<UmsUserDto> pageableUmsUserDto = umsClient.searchUsersByDemographic(firstName,
                 lastName,
                 genderCode,
-                birthDate, page, size);
+                formatBirthday.toString(), page, size);
         List<UserDto> userDtos = pageableUmsUserDto.getContent().stream()
                 .map(umsUserDto -> modelMapper.map(umsUserDto, UserDto.class))
                 .collect(Collectors.toList());

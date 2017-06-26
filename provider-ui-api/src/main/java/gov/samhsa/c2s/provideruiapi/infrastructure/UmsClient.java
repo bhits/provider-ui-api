@@ -4,7 +4,6 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.BaseUmsLookupDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.UmsUserDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @FeignClient("ums")
@@ -59,7 +57,7 @@ public interface UmsClient {
     PageableDto<UmsUserDto> searchUsersByDemographic(@RequestParam(value = "firstName", required = false) String firstName,
                                                      @RequestParam(value = "lastName", required = false) String lastName,
                                                      @RequestParam(value = "genderCode", required = false) String genderCode,
-                                                     @RequestParam(value = "birthDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthDate,
+                                                     @RequestParam(value = "birthDate", required = false) String birthDate,
                                                      @RequestParam(value = "page", required = false) Integer page,
                                                      @RequestParam(value = "size", required = false) Integer size);
 }
