@@ -4,6 +4,7 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ProfileResponse;
 import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface UmsService {
@@ -26,4 +27,12 @@ public interface UmsService {
     void enableUser(Long userId);
 
     ProfileResponse getProviderProfile();
+
+    PageableDto<UserDto> searchUsersByDemographic( String firstName,
+                                                   String lastName,
+                                                   LocalDate birthDate,
+                                                   String genderCode,
+                                                   Integer page,
+                                                   Integer size);
+
 }
