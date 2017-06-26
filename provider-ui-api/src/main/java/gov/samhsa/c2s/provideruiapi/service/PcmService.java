@@ -3,6 +3,7 @@ package gov.samhsa.c2s.provideruiapi.service;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ShareSensitivityCategoriesDto;
 
 import java.util.List;
 import java.util.Locale;
@@ -29,4 +30,6 @@ public interface PcmService {
     Object getAttestedConsent(String mrn, Long consentId, String format);
 
     Object getRevokedConsent(String mrn, Long consentId, String format);
+
+    ShareSensitivityCategoriesDto getShareSensitivityCategoriesConfig();
 }

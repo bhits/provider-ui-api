@@ -3,6 +3,7 @@ package gov.samhsa.c2s.provideruiapi.infrastructure;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ShareSensitivityCategoriesDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,4 +70,7 @@ public interface PcmClient {
     void deleteConsent(@PathVariable("patientId") String patientId,
                        @PathVariable("consentId") Long consentId,
                        @RequestParam(value = "lastUpdatedBy") String lastUpdatedBy);
+
+    @RequestMapping(value = "/consents/shareSensitivityCategoriesConfig", method = RequestMethod.GET)
+    ShareSensitivityCategoriesDto getShareSensitivityCategoriesConfig();
 }
