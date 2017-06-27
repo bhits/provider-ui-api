@@ -1,7 +1,9 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
 import gov.samhsa.c2s.provideruiapi.infrastructure.PcmClient;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
@@ -15,7 +17,10 @@ import java.util.Locale;
 public class PcmServiceImpl implements PcmService {
     private final PcmClient pcmClient;
     private final JwtTokenExtractor jwtTokenExtractor;
+
     private static final boolean CREATED_BY_PATIENT = false;
+    private static final boolean ATTESTED_BY_PATIENT = false;
+    private static final boolean REVOKED_BY_PATIENT = false;
 
     @Autowired
     public PcmServiceImpl(PcmClient pcmClient, JwtTokenExtractor jwtTokenExtractor) {
@@ -85,4 +90,31 @@ public class PcmServiceImpl implements PcmService {
     public Object getRevokedConsent(String mrn, Long consentId, String format) {
         return pcmClient.getRevokedConsent(mrn, consentId, format);
     }
+
+    @Override
+    public void attestConsent(String mrn, Long consentId, ConsentAttestationDto consentAttestationDto) {
+        // Get current user authId
+        String attestedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        pcmClient.attestConsent(mrn, consentId, consentAttestationDto, attestedBy, ATTESTED_BY_PATIENT);
+    }
+
+    @Override
+    public void revokeConsent(String mrn, Long consentId, ConsentRevocationDto consentRevocationDto) {
+        // Get current user authId
+        String revokedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        pcmClient.revokeConsent(mrn, consentId, consentRevocationDto, revokedBy, REVOKED_BY_PATIENT);
+    }
+
+    @Override
+    public Object getConsentAttestationTerm(Long id, Locale locale) {
+        return pcmClient.getConsentAttestationTerm(id, locale);
+    }
+
+    @Override
+    public Object getConsentRevocationTerm(Long id, Locale locale) {
+        return pcmClient.getConsentRevocationTerm(id, locale);
+    }
+
+
+
 }
