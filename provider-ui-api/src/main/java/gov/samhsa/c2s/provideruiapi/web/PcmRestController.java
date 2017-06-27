@@ -3,7 +3,7 @@ package gov.samhsa.c2s.provideruiapi.web;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ShareSensitivityCategoriesDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentTypeConfigurationDto;
 import gov.samhsa.c2s.provideruiapi.service.PcmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,9 +59,9 @@ public class PcmRestController {
     }
 
 
-    @GetMapping("/consents/shareSensitivityCategoriesConfig")
-    public ShareSensitivityCategoriesDto getShareSensitivityCategoriesConfig() {
-        return pcmService.getShareSensitivityCategoriesConfig();
+    @GetMapping("/consents/consentTypeConfiguration")
+    public ConsentTypeConfigurationDto getConsentTypeConfiguration() {
+        return pcmService.getConsentTypeConfiguration();
     }
 
     @GetMapping("/patients/{mrn}/consents")
