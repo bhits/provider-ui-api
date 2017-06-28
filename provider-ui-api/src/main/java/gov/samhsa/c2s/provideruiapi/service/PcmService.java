@@ -1,6 +1,8 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentTypeConfigurationDto;
@@ -30,6 +32,14 @@ public interface PcmService {
     Object getAttestedConsent(String mrn, Long consentId, String format);
 
     Object getRevokedConsent(String mrn, Long consentId, String format);
+
+    void attestConsent(String mrn, Long consentId, ConsentAttestationDto consentAttestationDto);
+
+    void revokeConsent(String mrn, Long consentId, ConsentRevocationDto consentRevocationDto);
+
+    Object getConsentAttestationTerm(Long id,Locale locale);
+
+    Object getConsentRevocationTerm(Long id, Locale locale);
 
     ConsentTypeConfigurationDto getConsentTypeConfiguration();
 }
