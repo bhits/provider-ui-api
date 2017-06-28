@@ -5,6 +5,7 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentTypeConfigurationDto;
 import gov.samhsa.c2s.provideruiapi.service.PcmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,12 @@ public class PcmRestController {
     @GetMapping("/purposes")
     public List<Object> getPurposes() {
         return pcmService.getPurposes();
+    }
+
+
+    @GetMapping("/consents/consentTypeConfiguration")
+    public ConsentTypeConfigurationDto getConsentTypeConfiguration() {
+        return pcmService.getConsentTypeConfiguration();
     }
 
     @GetMapping("/patients/{mrn}/consents")
