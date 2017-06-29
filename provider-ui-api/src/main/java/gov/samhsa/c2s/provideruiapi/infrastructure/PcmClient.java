@@ -5,7 +5,6 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentTypeConfigurationDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -98,7 +97,4 @@ public interface PcmClient {
     @RequestMapping(value = "/consentRevocationTerm", method = RequestMethod.GET)
     Object getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id,
                                             @RequestHeader("Accept-Language") Locale locale);
-
-    @RequestMapping(value = "/consents/consentTypeConfiguration", method = RequestMethod.GET)
-    ConsentTypeConfigurationDto getConsentTypeConfiguration();
 }

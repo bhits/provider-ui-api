@@ -6,7 +6,6 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentTypeConfigurationDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -116,8 +115,6 @@ public class PcmServiceImpl implements PcmService {
         return pcmClient.getConsentRevocationTerm(id, locale);
     }
 
-    @Override
-    public ConsentTypeConfigurationDto getConsentTypeConfiguration() {
-        return pcmClient.getConsentTypeConfiguration();
-    }
+
+
 }
