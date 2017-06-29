@@ -5,7 +5,6 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentTypeConfigurationDto;
 
 import java.util.List;
 import java.util.Locale;
@@ -40,6 +39,4 @@ public interface PcmService {
     Object getConsentAttestationTerm(Long id,Locale locale);
 
     Object getConsentRevocationTerm(Long id, Locale locale);
-
-    ConsentTypeConfigurationDto getConsentTypeConfiguration();
 }

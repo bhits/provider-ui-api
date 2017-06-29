@@ -25,17 +25,14 @@ public class ConsentDto {
     private IdentifiersDto fromProviders;
     @Valid
     @NotNull
-    private IdentifiersDto purposes;
+    private IdentifiersDto sharePurposes;
     @Valid
     @NotNull
-    private IdentifiersDto sensitivityCategories;
+    private IdentifiersDto shareSensitivityCategories;
     @NotNull
     @PresentOrFuture
     private LocalDate startDate;
     @Valid
     @NotNull
     private IdentifiersDto toProviders;
-
-    @NotNull
-    private boolean shareSensitivityCategoriesEnabled;
 }
