@@ -4,6 +4,7 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.service.UmsService;
 import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 import static gov.samhsa.c2s.provideruiapi.infrastructure.UmsClient.X_FORWARDED_HOST;
@@ -42,14 +44,15 @@ public class UmsRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerUser(@Valid @RequestBody UserDto userDto) {
-        umsService.registerUser(userDto);
+    public UserDto registerUser(@Valid @RequestBody UserDto userDto) {
+        return umsService.registerUser(userDto);
     }
 
     @GetMapping("/search")
     public List<UserDto> searchUsersByFirstNameAndORLastName(@RequestParam("term") String term) {
         return umsService.searchUsersByFirstNameAndORLastName(term);
     }
+
 
     @GetMapping("/{userId}")
     public UserDto getUser(@PathVariable Long userId) {
@@ -83,5 +86,16 @@ public class UmsRestController {
     @PutMapping("/{userId}/enabled")
     public void enableUser(@PathVariable Long userId) {
         umsService.enableUser(userId);
+    }
+
+
+    @GetMapping(value = "/search/patientDemographic")
+    public PageableDto<UserDto> searchUsersByDemographic(@RequestParam(value = "firstName", required = false) String firstName,
+                                                         @RequestParam(value = "lastName", required = false) String lastName,
+                                                         @RequestParam(value = "genderCode", required = false) String genderCode,
+                                                         @RequestParam(value = "birthDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthDate,
+                                                         @RequestParam(value = "page", required = false) Integer page,
+                                                         @RequestParam(value = "size", required = false) Integer size) {
+        return umsService.searchUsersByDemographic(firstName,lastName,birthDate,genderCode,page, size);
     }
 }
