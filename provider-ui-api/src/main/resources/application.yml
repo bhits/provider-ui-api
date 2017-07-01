@@ -11,6 +11,13 @@ security:
   oauth2:
     client:
       client-id: provider-ui-api
+# Server the configuration used for UI
+c2s:
+  provider-ui:
+    oauth2:
+      client:
+        client-id: provider-ui
+        secret: changeit
 ---
 spring.profiles: standalone-ssl
 spring:
