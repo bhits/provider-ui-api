@@ -18,6 +18,15 @@ public class ProviderUiProperties {
     @Valid
     private Oauth2 oauth2;
 
+    @Valid
+    private ProviderPermissions providerPermissions;
+
+    @Data
+    public static class ProviderPermissions {
+        private boolean consentSignEnabled;
+        private boolean consentRevokeEnabled;
+    }
+
     @Data
     public static class Oauth2 {
         @Valid
