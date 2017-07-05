@@ -16,8 +16,8 @@ public class ConfigRestController {
     }
 
     @GetMapping("/config/basicAuthorizationHeader")
-    public ProviderUiProperties getConfig() {
-        return providerUiProperties;
+    public ProviderUiProperties.Oauth2 getConfig() {
+        return providerUiProperties.getOauth2();
     }
 
     @GetMapping("/config/providerPermissions")
