@@ -60,4 +60,7 @@ public interface UmsClient {
                                                      @RequestParam(value = "birthDate", required = false) String birthDate,
                                                      @RequestParam(value = "page", required = false) Integer page,
                                                      @RequestParam(value = "size", required = false) Integer size);
+
+    @RequestMapping(value = "/users/authId/{userAuthId}", method = RequestMethod.GET)
+    UmsUserDto getUserById(@PathVariable("userAuthId") String userAuthId);
 }

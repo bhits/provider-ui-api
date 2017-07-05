@@ -5,6 +5,7 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.BaseUmsLookupDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ProfileResponse;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.UmsUserDto;
+import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -25,6 +26,9 @@ public class UmsServiceImpl implements UmsService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private JwtTokenExtractor jwtTokenExtractor;
 
     @Override
     public PageableDto<UserDto> getAllUsers(Integer page, Integer size) {
@@ -90,13 +94,13 @@ public class UmsServiceImpl implements UmsService {
     public ProfileResponse getProviderProfile() {
         //Get system supported Locales
         List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();
-        // TODO Implement get Provider profile from DB
+
+        UmsUserDto umsUserDto=umsClient.getUserById(jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID));
         return ProfileResponse.builder()
-                .userLocale("en")
+                .userLocale(umsUserDto.getLocale())
                 .supportedLocales(supportedLocales)
-                .username("")
-                .firstName("Bob")
-                .lastName("Provider")
+                .firstName(umsUserDto.getFirstName())
+                .lastName(umsUserDto.getLastName())
                 .build();
     }
 
