@@ -21,6 +21,9 @@ c2s:
     provider-permissions:
         consent-sign-enabled: false
         consent-revoke-enabled: false
+    consent-management:
+        active-attestation-term-id: 1
+        active-revocation-term-id: 1
 ---
 spring.profiles: standalone-ssl
 spring:

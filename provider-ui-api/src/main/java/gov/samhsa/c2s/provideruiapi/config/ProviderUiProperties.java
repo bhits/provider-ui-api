@@ -21,6 +21,9 @@ public class ProviderUiProperties {
     @Valid
     private ProviderPermissions providerPermissions;
 
+    @Valid
+    private ConsentManagement consentManagement;
+
     @Data
     public static class ProviderPermissions {
         private boolean consentSignEnabled;
@@ -46,5 +49,14 @@ public class ProviderUiProperties {
                 return (clientId.concat(":") + secret).getBytes(StandardCharsets.UTF_8);
             }
         }
+    }
+
+    @Data
+    public static class ConsentManagement {
+        @NotEmpty
+        private String activeAttestationTermId;
+
+        @NotEmpty
+        private String activeRevocationTermId;
     }
 }
