@@ -30,6 +30,9 @@ public class SecurityConfig {
                     http.requiresChannel().anyRequest().requiresSecure();
                 }
                 http.authorizeRequests()
+                        .antMatchers(HttpMethod.GET, "/config/basicAuthorizationHeader").permitAll()
+                        .antMatchers(HttpMethod.GET, "/config/**").access(hasScopes("providerUiApi.read"))
+
                         .antMatchers(HttpMethod.GET, "/pcm/**").access(hasScopes("providerUiApi.read"))
                         .antMatchers(HttpMethod.POST, "/pcm/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.DELETE, "/pcm/**").access(hasScopes("providerUiApi.write"))
@@ -37,14 +40,17 @@ public class SecurityConfig {
 
                         .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("providerUiApi.read"))
 
+                        .antMatchers(HttpMethod.POST, "/pep/access").access(hasScopes("providerUiApi.write"))
+
                         .antMatchers(HttpMethod.GET, "/vss/**").access(hasScopes("providerUiApi.read"))
+
+                        .antMatchers(HttpMethod.GET, "/try-policy/**").access(hasScopes("providerUiApi.read"))
 
                         .antMatchers(HttpMethod.GET, "/ums/users/**").access(hasScopes("providerUiApi.read"))
                         .antMatchers(HttpMethod.POST, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.DELETE, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.PUT, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.OPTIONS, "/ums/users/**").access(hasScopes("providerUiApi.write"))
-                        .antMatchers(HttpMethod.POST, "/pep/access").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.GET, "/ums/providers/profile/**").access(hasScopes("providerUiApi.read"))
                         .antMatchers(HttpMethod.GET, "/ums/userCreationLookupInfo/**").permitAll()
                         .anyRequest().denyAll();
