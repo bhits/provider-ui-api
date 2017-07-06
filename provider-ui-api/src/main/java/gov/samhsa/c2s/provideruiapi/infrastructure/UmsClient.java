@@ -24,7 +24,7 @@ public interface UmsClient {
                                         @RequestParam(value = "size", required = false) Integer size);
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    void registerUser(@RequestBody UmsUserDto umsUserDto);
+    UmsUserDto registerUser(@RequestBody UmsUserDto umsUserDto);
 
     @RequestMapping(value = "/users/search", method = RequestMethod.GET)
     List<UmsUserDto> searchUsersByFirstNameAndORLastName(@RequestParam("term") String term);
@@ -52,4 +52,12 @@ public interface UmsClient {
 
     @RequestMapping(value = "/locales", method = RequestMethod.GET)
     List<BaseUmsLookupDto> getLocales();
+
+    @RequestMapping(value = "/users/search/patientDemographic", method = RequestMethod.GET)
+    PageableDto<UmsUserDto> searchUsersByDemographic(@RequestParam(value = "firstName", required = false) String firstName,
+                                                     @RequestParam(value = "lastName", required = false) String lastName,
+                                                     @RequestParam(value = "genderCode", required = false) String genderCode,
+                                                     @RequestParam(value = "birthDate", required = false) String birthDate,
+                                                     @RequestParam(value = "page", required = false) Integer page,
+                                                     @RequestParam(value = "size", required = false) Integer size);
 }

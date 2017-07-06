@@ -12,11 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UmsServiceImpl implements UmsService {
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
     @Autowired
     private UmsClient umsClient;
 
@@ -41,8 +44,8 @@ public class UmsServiceImpl implements UmsService {
     }
 
     @Override
-    public void registerUser(UserDto userDto) {
-        umsClient.registerUser(modelMapper.map(userDto, UmsUserDto.class));
+    public UserDto registerUser(UserDto userDto) {
+        return modelMapper.map(umsClient.registerUser(modelMapper.map(userDto, UmsUserDto.class)), UserDto.class);
     }
 
     @Override
@@ -95,5 +98,37 @@ public class UmsServiceImpl implements UmsService {
                 .firstName("Bob")
                 .lastName("Provider")
                 .build();
+    }
+
+
+    @Override
+    public PageableDto<UserDto> searchUsersByDemographic(String firstName,
+                                                         String lastName,
+                                                         LocalDate birthDate,
+                                                         String genderCode,
+                                                         Integer page,
+                                                         Integer size) {
+        //Mapping of generic parameterized types
+        Type pageableUserDtoType = new TypeToken<PageableDto<UserDto>>() {
+        }.getType();
+
+        StringBuilder formatBirthday = new StringBuilder();
+        if(birthDate!=null) {
+            DateTimeFormatter formatters = DateTimeFormatter.ofPattern(DATE_FORMAT);
+            formatBirthday.append(birthDate.format(formatters));
+        }
+
+        PageableDto<UmsUserDto> pageableUmsUserDto = umsClient.searchUsersByDemographic(firstName,
+                lastName,
+                genderCode,
+                formatBirthday.toString(), page, size);
+        List<UserDto> userDtos = pageableUmsUserDto.getContent().stream()
+                .map(umsUserDto -> modelMapper.map(umsUserDto, UserDto.class))
+                .collect(Collectors.toList());
+
+        PageableDto<UserDto> pageableUserDto = modelMapper.map(pageableUmsUserDto, pageableUserDtoType);
+        pageableUserDto.setContent(userDtos);
+
+        return pageableUserDto;
     }
 }
