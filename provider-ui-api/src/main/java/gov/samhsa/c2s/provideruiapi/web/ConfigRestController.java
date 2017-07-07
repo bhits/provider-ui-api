@@ -24,4 +24,9 @@ public class ConfigRestController {
     public ProviderUiProperties.ProviderPermissions getProviderPermissionsConfig() {
         return providerUiProperties.getProviderPermissions();
     }
+
+    @GetMapping("/config/registration")
+    public ProviderUiProperties.Registration getRegistrationConfig(){
+        return providerUiProperties.getRegistration();
+    }
 }

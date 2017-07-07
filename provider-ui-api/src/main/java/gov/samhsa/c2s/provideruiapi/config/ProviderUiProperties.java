@@ -30,6 +30,10 @@ public class ProviderUiProperties {
         private boolean consentRevokeEnabled;
     }
 
+    @NotNull
+    @Valid
+    private Registration registration;
+
     @Data
     public static class Oauth2 {
         @Valid
@@ -49,6 +53,11 @@ public class ProviderUiProperties {
                 return (clientId.concat(":") + secret).getBytes(StandardCharsets.UTF_8);
             }
         }
+    }
+
+    @Data
+    public static class Registration {
+        private boolean duplicateCheckEnabled = false;
     }
 
     @Data
