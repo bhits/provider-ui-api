@@ -27,6 +27,8 @@ public class UmsServiceImpl implements UmsService {
     @Autowired
     private ModelMapper modelMapper;
 
+    private String ROLE_CODE="patient";
+
     @Autowired
     private JwtTokenExtractor jwtTokenExtractor;
 
@@ -110,6 +112,7 @@ public class UmsServiceImpl implements UmsService {
                                                          String lastName,
                                                          LocalDate birthDate,
                                                          String genderCode,
+                                                         String mrn,
                                                          Integer page,
                                                          Integer size) {
         //Mapping of generic parameterized types
@@ -125,7 +128,7 @@ public class UmsServiceImpl implements UmsService {
         PageableDto<UmsUserDto> pageableUmsUserDto = umsClient.searchUsersByDemographic(firstName,
                 lastName,
                 genderCode,
-                formatBirthday.toString(), page, size);
+                formatBirthday.toString(),mrn, ROLE_CODE,page, size);
         List<UserDto> userDtos = pageableUmsUserDto.getContent().stream()
                 .map(umsUserDto -> modelMapper.map(umsUserDto, UserDto.class))
                 .collect(Collectors.toList());
