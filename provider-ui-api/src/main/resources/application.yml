@@ -18,6 +18,8 @@ c2s:
       client:
         client-id: provider-ui
         secret: changeit
+    registration:
+      duplicate-check-enabled: false
 ---
 spring.profiles: standalone-ssl
 spring:
