@@ -31,7 +31,6 @@ public class SecurityConfig {
                 }
                 http.authorizeRequests()
                         .antMatchers(HttpMethod.GET, "/config/basicAuthorizationHeader").permitAll()
-                        .antMatchers(HttpMethod.GET, "/config/registration").permitAll()
                         .antMatchers(HttpMethod.GET, "/config/**").access(hasScopes("providerUiApi.read"))
 
                         .antMatchers(HttpMethod.GET, "/pcm/**").access(hasScopes("providerUiApi.read"))
