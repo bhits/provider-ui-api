@@ -11,13 +11,19 @@ security:
   oauth2:
     client:
       client-id: provider-ui-api
-# Server the configuration used for UI
+# The configuration used for Provider UI
 c2s:
   provider-ui:
     oauth2:
       client:
         client-id: provider-ui
         secret: changeit
+    provider-permissions:
+        consent-sign-enabled: false
+        consent-revoke-enabled: false
+    consent-management:
+        active-attestation-term-id: 1
+        active-revocation-term-id: 1
     registration:
       duplicate-check-enabled: false
 ---
