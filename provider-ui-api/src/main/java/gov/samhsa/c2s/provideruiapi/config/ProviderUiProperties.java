@@ -23,6 +23,7 @@ public class ProviderUiProperties {
     @Valid
     private ProviderPermissions providerPermissions;
 
+    @NotNull
     @Valid
     private ConsentManagement consentManagement;
 
