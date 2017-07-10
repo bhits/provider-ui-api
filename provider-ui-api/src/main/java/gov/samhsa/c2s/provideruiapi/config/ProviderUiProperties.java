@@ -26,8 +26,8 @@ public class ProviderUiProperties {
 
     @Data
     public static class ProviderPermissions {
-        private boolean consentSignEnabled;
-        private boolean consentRevokeEnabled;
+        private boolean consentSignEnabled = false;
+        private boolean consentRevokeEnabled = false;
     }
 
     @NotNull
