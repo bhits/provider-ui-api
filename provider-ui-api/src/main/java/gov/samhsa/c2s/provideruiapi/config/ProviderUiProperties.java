@@ -19,21 +19,24 @@ public class ProviderUiProperties {
     @Valid
     private Oauth2 oauth2;
 
+    @NotNull
     @Valid
     private ProviderPermissions providerPermissions;
 
+    @NotNull
     @Valid
     private ConsentManagement consentManagement;
 
     @Data
     public static class ProviderPermissions {
-        private boolean consentSignEnabled = false;
-        private boolean consentRevokeEnabled = false;
+        private boolean consentSignEnabled = true;
+        private boolean consentRevokeEnabled = true;
+        private boolean userActivationEnabled = false;
+        private boolean segmentationEnabled = false;
+        @NotNull
+        @Valid
+        private Registration registration;
     }
-
-    @NotNull
-    @Valid
-    private Registration registration;
 
     @Data
     public static class Oauth2 {
