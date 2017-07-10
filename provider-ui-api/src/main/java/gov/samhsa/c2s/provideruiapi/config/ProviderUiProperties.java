@@ -29,10 +29,10 @@ public class ProviderUiProperties {
 
     @Data
     public static class ProviderPermissions {
-        private boolean consentSignEnabled = false;
-        private boolean consentRevokeEnabled = false;
-        private boolean userActivationEnabled = true;
-        private boolean segmentationEnabled = true;
+        private boolean consentSignEnabled = true;
+        private boolean consentRevokeEnabled = true;
+        private boolean userActivationEnabled = false;
+        private boolean segmentationEnabled = false;
         @NotNull
         @Valid
         private Registration registration;
