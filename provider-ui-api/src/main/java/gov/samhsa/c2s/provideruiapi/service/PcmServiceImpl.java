@@ -110,12 +110,12 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public Object getConsentAttestationTerm(Locale locale) {
-        return pcmClient.getConsentAttestationTerm(Long.valueOf(providerUiProperties.getConsentManagement().getActiveAttestationTermId()), locale);
+        return pcmClient.getConsentAttestationTerm(providerUiProperties.getConsentManagement().getActiveAttestationTermId(), locale);
     }
 
     @Override
     public Object getConsentRevocationTerm(Locale locale) {
-        return pcmClient.getConsentRevocationTerm(Long.valueOf(providerUiProperties.getConsentManagement().getActiveRevocationTermId()), locale);
+        return pcmClient.getConsentRevocationTerm(providerUiProperties.getConsentManagement().getActiveRevocationTermId(), locale);
     }
 
 }
