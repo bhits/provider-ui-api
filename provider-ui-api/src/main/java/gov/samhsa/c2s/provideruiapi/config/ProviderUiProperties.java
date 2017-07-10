@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
 
@@ -63,9 +64,11 @@ public class ProviderUiProperties {
     @Data
     public static class ConsentManagement {
         @NotEmpty
-        private String activeAttestationTermId;
+        @Min(1)
+        private Long activeAttestationTermId;
 
         @NotEmpty
-        private String activeRevocationTermId;
+        @Min(1)
+        private Long activeRevocationTermId;
     }
 }
