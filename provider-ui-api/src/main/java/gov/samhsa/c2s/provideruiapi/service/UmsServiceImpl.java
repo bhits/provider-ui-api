@@ -5,6 +5,7 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.BaseUmsLookupDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ProfileResponse;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.UmsUserDto;
+import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -25,6 +26,11 @@ public class UmsServiceImpl implements UmsService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    private String ROLE_CODE="patient";
+
+    @Autowired
+    private JwtTokenExtractor jwtTokenExtractor;
 
     @Override
     public PageableDto<UserDto> getAllUsers(Integer page, Integer size) {
@@ -90,13 +96,13 @@ public class UmsServiceImpl implements UmsService {
     public ProfileResponse getProviderProfile() {
         //Get system supported Locales
         List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();
-        // TODO Implement get Provider profile from DB
+
+        UmsUserDto umsUserDto=umsClient.getUserById(jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID));
         return ProfileResponse.builder()
-                .userLocale("en")
+                .userLocale(umsUserDto.getLocale())
                 .supportedLocales(supportedLocales)
-                .username("")
-                .firstName("Bob")
-                .lastName("Provider")
+                .firstName(umsUserDto.getFirstName())
+                .lastName(umsUserDto.getLastName())
                 .build();
     }
 
@@ -106,6 +112,7 @@ public class UmsServiceImpl implements UmsService {
                                                          String lastName,
                                                          LocalDate birthDate,
                                                          String genderCode,
+                                                         String mrn,
                                                          Integer page,
                                                          Integer size) {
         //Mapping of generic parameterized types
@@ -121,7 +128,7 @@ public class UmsServiceImpl implements UmsService {
         PageableDto<UmsUserDto> pageableUmsUserDto = umsClient.searchUsersByDemographic(firstName,
                 lastName,
                 genderCode,
-                formatBirthday.toString(), page, size);
+                formatBirthday.toString(),mrn, ROLE_CODE,page, size);
         List<UserDto> userDtos = pageableUmsUserDto.getContent().stream()
                 .map(umsUserDto -> modelMapper.map(umsUserDto, UserDto.class))
                 .collect(Collectors.toList());

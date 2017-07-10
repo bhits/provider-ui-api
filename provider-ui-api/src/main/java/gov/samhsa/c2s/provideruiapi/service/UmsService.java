@@ -32,6 +32,7 @@ public interface UmsService {
                                                    String lastName,
                                                    LocalDate birthDate,
                                                    String genderCode,
+                                                   String mrn,
                                                    Integer page,
                                                    Integer size);
 

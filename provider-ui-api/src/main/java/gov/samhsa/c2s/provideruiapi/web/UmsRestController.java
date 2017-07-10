@@ -94,8 +94,9 @@ public class UmsRestController {
                                                          @RequestParam(value = "lastName", required = false) String lastName,
                                                          @RequestParam(value = "genderCode", required = false) String genderCode,
                                                          @RequestParam(value = "birthDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthDate,
+                                                         @RequestParam(value = "mrn", required = false) String mrn,
                                                          @RequestParam(value = "page", required = false) Integer page,
                                                          @RequestParam(value = "size", required = false) Integer size) {
-        return umsService.searchUsersByDemographic(firstName,lastName,birthDate,genderCode,page, size);
+        return umsService.searchUsersByDemographic(firstName,lastName,birthDate,genderCode,mrn,page, size);
     }
 }
