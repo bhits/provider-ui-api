@@ -38,7 +38,7 @@ public class UmsServiceImpl implements UmsService {
         Type pageableUserDtoType = new TypeToken<PageableDto<UserDto>>() {
         }.getType();
 
-        PageableDto<UmsUserDto> pageableUmsUserDto = umsClient.getAllUsers(page, size);
+        PageableDto<UmsUserDto> pageableUmsUserDto = umsClient.getAllUsers(page, size, ROLE_CODE);
         List<UserDto> userDtos = pageableUmsUserDto.getContent().stream()
                 .map(umsUserDto -> modelMapper.map(umsUserDto, UserDto.class))
                 .collect(Collectors.toList());
