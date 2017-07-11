@@ -21,7 +21,8 @@ public interface UmsClient {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     PageableDto<UmsUserDto> getAllUsers(@RequestParam(value = "page", required = false) Integer page,
-                                        @RequestParam(value = "size", required = false) Integer size);
+                                        @RequestParam(value = "size", required = false) Integer size,
+                                        @RequestParam(value = "role", required = false) String role);
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     UmsUserDto registerUser(@RequestBody UmsUserDto umsUserDto);
