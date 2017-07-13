@@ -21,6 +21,7 @@ public class PcmServiceImpl implements PcmService {
     private final ProviderUiProperties providerUiProperties;
 
     private static final boolean CREATED_BY_PATIENT = false;
+    private static final boolean UPDATED_BY_PATIENT = false;
     private static final boolean ATTESTED_BY_PATIENT = false;
     private static final boolean REVOKED_BY_PATIENT = false;
 
@@ -73,7 +74,7 @@ public class PcmServiceImpl implements PcmService {
     public void updateConsent(String mrn, Long consentId, ConsentDto consentDto) {
         // Get current user authId
         String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        pcmClient.updateConsent(mrn, consentId, consentDto, lastUpdatedBy);
+        pcmClient.updateConsent(mrn, consentId, consentDto, lastUpdatedBy, UPDATED_BY_PATIENT);
 
     }
 
