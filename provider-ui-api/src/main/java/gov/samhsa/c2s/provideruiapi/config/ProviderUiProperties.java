@@ -18,6 +18,25 @@ public class ProviderUiProperties {
     @Valid
     private Oauth2 oauth2;
 
+    @NotNull
+    @Valid
+    private ProviderPermissions providerPermissions;
+
+    @NotNull
+    @Valid
+    private ConsentManagement consentManagement;
+
+    @Data
+    public static class ProviderPermissions {
+        private boolean consentSignEnabled = true;
+        private boolean consentRevokeEnabled = true;
+        private boolean userActivationEnabled = false;
+        private boolean segmentationEnabled = false;
+        @NotNull
+        @Valid
+        private Registration registration;
+    }
+
     @Data
     public static class Oauth2 {
         @Valid
@@ -37,5 +56,19 @@ public class ProviderUiProperties {
                 return (clientId.concat(":") + secret).getBytes(StandardCharsets.UTF_8);
             }
         }
+    }
+
+    @Data
+    public static class Registration {
+        private boolean duplicateCheckEnabled = false;
+    }
+
+    @Data
+    public static class ConsentManagement {
+        @NotNull
+        private Long activeAttestationTermId;
+
+        @NotNull
+        private Long activeRevocationTermId;
     }
 }
