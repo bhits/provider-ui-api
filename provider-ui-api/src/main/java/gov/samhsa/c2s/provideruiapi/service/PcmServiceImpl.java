@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
+import gov.samhsa.c2s.provideruiapi.config.ProviderUiProperties;
 import gov.samhsa.c2s.provideruiapi.infrastructure.PcmClient;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
@@ -17,15 +18,17 @@ import java.util.Locale;
 public class PcmServiceImpl implements PcmService {
     private final PcmClient pcmClient;
     private final JwtTokenExtractor jwtTokenExtractor;
+    private final ProviderUiProperties providerUiProperties;
 
     private static final boolean CREATED_BY_PATIENT = false;
     private static final boolean ATTESTED_BY_PATIENT = false;
     private static final boolean REVOKED_BY_PATIENT = false;
 
     @Autowired
-    public PcmServiceImpl(PcmClient pcmClient, JwtTokenExtractor jwtTokenExtractor) {
+    public PcmServiceImpl(PcmClient pcmClient, JwtTokenExtractor jwtTokenExtractor, ProviderUiProperties providerUiProperties) {
         this.pcmClient = pcmClient;
         this.jwtTokenExtractor = jwtTokenExtractor;
+        this.providerUiProperties = providerUiProperties;
     }
 
     @Override
@@ -106,15 +109,13 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public Object getConsentAttestationTerm(Long id, Locale locale) {
-        return pcmClient.getConsentAttestationTerm(id, locale);
+    public Object getConsentAttestationTerm(Locale locale) {
+        return pcmClient.getConsentAttestationTerm(providerUiProperties.getConsentManagement().getActiveAttestationTermId(), locale);
     }
 
     @Override
-    public Object getConsentRevocationTerm(Long id, Locale locale) {
-        return pcmClient.getConsentRevocationTerm(id, locale);
+    public Object getConsentRevocationTerm(Locale locale) {
+        return pcmClient.getConsentRevocationTerm(providerUiProperties.getConsentManagement().getActiveRevocationTermId(), locale);
     }
-
-
 
 }
