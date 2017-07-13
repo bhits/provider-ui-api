@@ -19,10 +19,10 @@ c2s:
         client-id: provider-ui
         secret: changeit
     provider-permissions:
-      consent-sign-enabled: true
-      consent-revoke-enabled: true
-      user-activation-enabled: false
-      segmentation-enabled: false
+      consent-sign-enabled: false
+      consent-revoke-enabled: false
+      user-activation-enabled: true
+      segmentation-enabled: true
       registration:
         duplicate-check-enabled: false
     consent-management:
