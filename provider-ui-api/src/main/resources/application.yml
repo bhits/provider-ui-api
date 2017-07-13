@@ -26,7 +26,7 @@ c2s:
       registration:
         duplicate-check-enabled: false
     consent-management:
-      active-attestation-term-id: 1
+      active-attestation-term-id: 3
       active-revocation-term-id: 1
 ---
 spring.profiles: standalone-ssl
