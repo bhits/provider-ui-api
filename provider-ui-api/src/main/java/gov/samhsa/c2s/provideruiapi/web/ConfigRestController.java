@@ -8,11 +8,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ConfigRestController {
 
+    private final ProviderUiProperties providerUiProperties;
+
     @Autowired
-    private ProviderUiProperties providerUiProperties;
+    public ConfigRestController(ProviderUiProperties providerUiProperties) {
+        this.providerUiProperties = providerUiProperties;
+    }
 
     @GetMapping("/config/basicAuthorizationHeader")
-    public ProviderUiProperties getConfig() {
-        return providerUiProperties;
+    public ProviderUiProperties.Oauth2 getConfig() {
+        return providerUiProperties.getOauth2();
+    }
+
+    @GetMapping("/config/providerPermissions")
+    public ProviderUiProperties.ProviderPermissions getProviderPermissionsConfig() {
+        return providerUiProperties.getProviderPermissions();
     }
 }
