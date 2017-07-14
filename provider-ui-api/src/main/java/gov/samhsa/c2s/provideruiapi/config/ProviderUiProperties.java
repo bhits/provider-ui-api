@@ -32,6 +32,7 @@ public class ProviderUiProperties {
         private boolean consentRevokeEnabled = false;
         private boolean userActivationEnabled = true;
         private boolean segmentationEnabled = true;
+        private boolean patientListCardEnabled;
         @NotNull
         @Valid
         private Registration registration;

@@ -25,6 +25,7 @@ c2s:
       segmentation-enabled: true
       registration:
         duplicate-check-enabled: false
+      patient-list-card-enabled: true
     consent-management:
       active-attestation-term-id: 1
       active-revocation-term-id: 1
