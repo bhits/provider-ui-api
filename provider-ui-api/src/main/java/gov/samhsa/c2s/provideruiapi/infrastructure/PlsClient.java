@@ -41,4 +41,8 @@ public interface PlsClient {
     @RequestMapping(value = "/providers/{npi}", method = RequestMethod.GET)
     FlattenedSmallProviderDto searchByNpi(@PathVariable("npi") String npi);
 
+    @RequestMapping(value = "/stateCodes", method = RequestMethod.GET)
+    Object getStateCodes(@RequestParam(value = "size", required = false) int size,
+                                                @RequestParam(value = "page", required = false) int page);
+
 }
