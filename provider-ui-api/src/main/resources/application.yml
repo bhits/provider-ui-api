@@ -26,6 +26,7 @@ c2s:
       registration:
         duplicate-check-enabled: false
       patient-list-card-enabled: true
+  provider-ui-api:
     consent-management:
       active-attestation-term-id: 1
       active-revocation-term-id: 1
