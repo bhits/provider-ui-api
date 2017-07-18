@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("ums")
 public class UmsLookupRestController {
 
-
     @Autowired
     private UmsLookupService umsLookupService;
 
@@ -19,5 +18,4 @@ public class UmsLookupRestController {
     public UserCreationLookupDto getUserCreationLookupInfo() {
         return umsLookupService.getUserCreationLookupInfo();
     }
-
 }
