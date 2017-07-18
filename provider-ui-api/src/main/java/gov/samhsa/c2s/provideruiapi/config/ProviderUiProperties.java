@@ -26,12 +26,17 @@ public class ProviderUiProperties {
     @Valid
     private ConsentManagement consentManagement;
 
+    @NotNull
+    @Valid
+    private Search search;
+
     @Data
     public static class ProviderPermissions {
         private boolean consentSignEnabled = false;
         private boolean consentRevokeEnabled = false;
         private boolean userActivationEnabled = true;
         private boolean segmentationEnabled = true;
+        private boolean patientListCardEnabled;
         @NotNull
         @Valid
         private Registration registration;
@@ -70,5 +75,15 @@ public class ProviderUiProperties {
 
         @NotNull
         private Long activeRevocationTermId;
+    }
+
+    @Data
+    public static class Search {
+        @NotNull
+        private boolean firstNameEnabled;
+        private boolean lastNameEnabled;
+        private boolean genderEnabled;
+        private boolean dateOfBirthEnabled;
+        private boolean patientIdEnabled;
     }
 }
