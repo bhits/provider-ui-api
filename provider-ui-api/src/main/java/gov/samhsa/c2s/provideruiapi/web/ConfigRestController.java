@@ -21,11 +21,6 @@ public class ConfigRestController {
         return providerUiProperties.getOauth2();
     }
 
-    @GetMapping("/config/providerPermissions")
-    public ProviderUiProperties.ProviderPermissions getProviderPermissionsConfig() {
-        return providerUiProperties.getProviderPermissions();
-    }
-
     @GetMapping("/config")
     public ProviderUiProperties getProviderConfig() {
         return providerUiProperties;
