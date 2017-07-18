@@ -37,4 +37,8 @@ public class UmsUserDto {
     private Optional<List<IdentifierDto>> identifiers;
 
     private Optional<String> registrationPurposeEmail;
+
+    private String createdBy;
+
+    private String lastUpdatedBy;
 }

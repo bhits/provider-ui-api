@@ -17,6 +17,7 @@ import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +32,11 @@ public class UmsServiceImpl implements UmsService {
     private String ROLE_CODE="patient";
 
     @Autowired
-    private JwtTokenExtractor jwtTokenExtractor;
+    private final JwtTokenExtractor jwtTokenExtractor;
+
+    public UmsServiceImpl(JwtTokenExtractor jwtTokenExtractor) {
+        this.jwtTokenExtractor = jwtTokenExtractor;
+    }
 
     @Autowired
     private ProviderUiProperties providerUiProperties;
@@ -59,6 +64,8 @@ public class UmsServiceImpl implements UmsService {
 
     @Override
     public UserDto registerUser(UserDto userDto) {
+        userDto.setCreatedBy(getLastUpddatedBy());
+        userDto.setLastUpdatedBy(getLastUpddatedBy());
         return modelMapper.map(umsClient.registerUser(modelMapper.map(userDto, UmsUserDto.class)), UserDto.class);
     }
 
@@ -76,12 +83,13 @@ public class UmsServiceImpl implements UmsService {
 
     @Override
     public void updateUser(Long userId, UserDto userDto) {
+        userDto.setLastUpdatedBy(getLastUpddatedBy());
         umsClient.updateUser(userId, modelMapper.map(userDto, UmsUserDto.class));
     }
 
     @Override
     public Object initiateUserActivation(Long userId, String xForwardedProto, String xForwardedHost, int xForwardedPort) {
-        return umsClient.initiateUserActivation(userId, xForwardedProto, xForwardedHost, xForwardedPort);
+        return umsClient.initiateUserActivation(userId, getLastUpddatedBy(), xForwardedProto, xForwardedHost, xForwardedPort);
     }
 
     @Override
@@ -91,12 +99,13 @@ public class UmsServiceImpl implements UmsService {
 
     @Override
     public void disableUser(Long userId) {
-        umsClient.disableUser(userId);
+        umsClient.disableUser(userId, getLastUpddatedBy());
+
     }
 
     @Override
     public void enableUser(Long userId) {
-        umsClient.enableUser(userId);
+        umsClient.enableUser(userId, getLastUpddatedBy());
     }
 
 
@@ -171,5 +180,11 @@ public class UmsServiceImpl implements UmsService {
         }else{
             return true;
         }
+    }
+
+
+
+    private String getLastUpddatedBy() {
+        return jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
     }
 }
