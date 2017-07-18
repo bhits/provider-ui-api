@@ -26,12 +26,12 @@ c2s:
       registration:
         duplicate-check-enabled: false
       patient-list-card-enabled: true
-    search:
-      first-name-enabled: true
-      last-name-enabled: true
-      gender-enabled: false
-      date-of-birth-enabled: false
-      patient-id-enabled: false
+      patient-search:
+        first-name-enabled: true
+        last-name-enabled: true
+        gender-enabled: false
+        date-of-birth-enabled: false
+        patient-id-enabled: false
   provider-ui-api:
     consent-management:
       active-attestation-term-id: 3

@@ -158,15 +158,15 @@ public class UmsServiceImpl implements UmsService {
     }
 
     private boolean canSearchBasedOnConfiguration(String firstName, String lastName, String gender, String dateOfBirth, String mrn) {
-        if (providerUiProperties.getSearch().isFirstNameEnabled() && (firstName == null || firstName.length() < MIN_FIRST_NAME_LENGTH)) {
+        if (providerUiProperties.getProviderPermissions().getPatientSearch().isFirstNameEnabled() && (firstName == null || firstName.length() < MIN_FIRST_NAME_LENGTH)) {
             return false;
-        } else if (providerUiProperties.getSearch().isLastNameEnabled() && (lastName == null || lastName.length() < MIN_LAST_NAME_LENGTH)) {
+        } else if (providerUiProperties.getProviderPermissions().getPatientSearch().isLastNameEnabled() && (lastName == null || lastName.length() < MIN_LAST_NAME_LENGTH)) {
             return false;
-        } else if (providerUiProperties.getSearch().isGenderEnabled() && (gender == null)) {
+        } else if (providerUiProperties.getProviderPermissions().getPatientSearch().isGenderEnabled() && (gender == null)) {
             return false;
-        } else if (providerUiProperties.getSearch().isDateOfBirthEnabled() && (dateOfBirth == null)) {
+        } else if (providerUiProperties.getProviderPermissions().getPatientSearch().isDateOfBirthEnabled() && (dateOfBirth == null)) {
             return false;
-        } else if (providerUiProperties.getSearch().isPatientIdEnabled() && (mrn == null || mrn.length() < MIN_PATIENT_ID_LENGTH)) {
+        } else if (providerUiProperties.getProviderPermissions().getPatientSearch().isPatientIdEnabled() && (mrn == null || mrn.length() < MIN_PATIENT_ID_LENGTH)) {
             return false;
         } else {
             return true;
