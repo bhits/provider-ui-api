@@ -32,9 +32,9 @@ c2s:
     search:
       first-name-enabled: true
       last-name-enabled: true
-      gender-enabled: true
-      date-of-birth-enabled: true
-      patient-id-enabled: true
+      gender-enabled: false
+      date-of-birth-enabled: false
+      patient-id-enabled: false
 ---
 spring.profiles: standalone-ssl
 spring:

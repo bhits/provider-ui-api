@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
+import gov.samhsa.c2s.provideruiapi.config.ProviderUiProperties;
 import gov.samhsa.c2s.provideruiapi.infrastructure.UmsClient;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.BaseUmsLookupDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
@@ -31,6 +32,13 @@ public class UmsServiceImpl implements UmsService {
 
     @Autowired
     private JwtTokenExtractor jwtTokenExtractor;
+
+    @Autowired
+    private ProviderUiProperties providerUiProperties;
+
+    private final int MIN_FIRST_NAME_LENGTH = 4;
+    private final int MIN_LAST_NAME_LENGTH = 4;
+    private final int MIN_PATIENT_ID_LENGTH = 4;
 
     @Override
     public PageableDto<UserDto> getAllUsers(Integer page, Integer size) {
@@ -125,17 +133,43 @@ public class UmsServiceImpl implements UmsService {
             formatBirthday.append(birthDate.format(formatters));
         }
 
-        PageableDto<UmsUserDto> pageableUmsUserDto = umsClient.searchUsersByDemographic(firstName,
-                lastName,
-                genderCode,
-                formatBirthday.toString(),mrn, ROLE_CODE,page, size);
-        List<UserDto> userDtos = pageableUmsUserDto.getContent().stream()
-                .map(umsUserDto -> modelMapper.map(umsUserDto, UserDto.class))
-                .collect(Collectors.toList());
+        PageableDto<UserDto> pageableUserDto = null;
 
-        PageableDto<UserDto> pageableUserDto = modelMapper.map(pageableUmsUserDto, pageableUserDtoType);
-        pageableUserDto.setContent(userDtos);
+        if(canSearchBasedOnConfiguration(firstName, lastName, genderCode,  formatBirthday.toString(), mrn)){
+            PageableDto<UmsUserDto> pageableUmsUserDto = umsClient.searchUsersByDemographic(
+                    firstName,
+                    lastName,
+                    genderCode ,
+                    formatBirthday.toString(),
+                    mrn,
+                    ROLE_CODE,page, size);
+            List<UserDto> userDtos = pageableUmsUserDto.getContent().stream()
+                    .map(umsUserDto -> modelMapper.map(umsUserDto, UserDto.class))
+                    .collect(Collectors.toList());
+
+            pageableUserDto = modelMapper.map(pageableUmsUserDto, pageableUserDtoType);
+            pageableUserDto.setContent(userDtos);
+        }else {
+            pageableUserDto = new PageableDto<>();
+        };
 
         return pageableUserDto;
+    }
+
+    private boolean canSearchBasedOnConfiguration(String firstName, String lastName, String gender,String dateOfBirth,String mrn ){
+        if(providerUiProperties.getSearch().isFirstNameEnabled() && ( firstName == null || firstName.length()< MIN_FIRST_NAME_LENGTH) ){
+            return false;
+        }else if(providerUiProperties.getSearch().isLastNameEnabled() &&  ( lastName == null || lastName.length()< MIN_LAST_NAME_LENGTH) ){
+            return false;
+        }
+        else if(providerUiProperties.getSearch().isGenderEnabled()  &&  ( gender == null )){
+            return false;
+        }else if(providerUiProperties.getSearch().isDateOfBirthEnabled()  &&  ( dateOfBirth == null )){
+            return false;
+        }else if(providerUiProperties.getSearch().isPatientIdEnabled() &&  ( mrn == null || mrn.length()< MIN_PATIENT_ID_LENGTH) ){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
