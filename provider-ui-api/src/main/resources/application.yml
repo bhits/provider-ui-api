@@ -28,8 +28,14 @@ c2s:
       patient-list-card-enabled: true
   provider-ui-api:
     consent-management:
-      active-attestation-term-id: 1
+      active-attestation-term-id: 3
       active-revocation-term-id: 1
+    search:
+      first-name-enabled: true
+      last-name-enabled: true
+      gender-enabled: false
+      date-of-birth-enabled: false
+      patient-id-enabled: false
 ---
 spring.profiles: standalone-ssl
 spring:

@@ -24,6 +24,10 @@ public class ProviderUiProperties {
     @Valid
     private ProviderPermissions providerPermissions;
 
+    @NotNull
+    @Valid
+    private Search search;
+
     @Data
     public static class ProviderPermissions {
         private boolean consentSignEnabled = false;
@@ -60,5 +64,15 @@ public class ProviderUiProperties {
     @Data
     public static class Registration {
         private boolean duplicateCheckEnabled = false;
+    }
+
+    @Data
+    public static class Search {
+        @NotNull
+        private boolean firstNameEnabled;
+        private boolean lastNameEnabled;
+        private boolean genderEnabled;
+        private boolean dateOfBirthEnabled;
+        private boolean patientIdEnabled;
     }
 }
