@@ -31,6 +31,7 @@ public class SecurityConfig {
                 }
                 http.authorizeRequests()
                         .antMatchers(HttpMethod.GET, "/config/basicAuthorizationHeader").permitAll()
+                        .antMatchers(HttpMethod.GET, "/config/userSearchConfig/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/config/**").access(hasScopes("providerUiApi.read"))
 
                         .antMatchers(HttpMethod.GET, "/pcm/**").access(hasScopes("providerUiApi.read"))
@@ -53,7 +54,6 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.OPTIONS, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.GET, "/ums/providers/profile/**").access(hasScopes("providerUiApi.read"))
                         .antMatchers(HttpMethod.GET, "/ums/userCreationLookupInfo/**").permitAll()
-                        .antMatchers(HttpMethod.GET, "/ums/userSearchConfig/**").permitAll()
                         .anyRequest().denyAll();
             }
         };
