@@ -39,4 +39,6 @@ public interface PcmService {
     Object getConsentAttestationTerm(Locale locale);
 
     Object getConsentRevocationTerm(Locale locale);
+
+    Object getActivties(String mrn, Locale locale);
 }

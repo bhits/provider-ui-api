@@ -119,4 +119,9 @@ public class PcmServiceImpl implements PcmService {
         return pcmClient.getConsentRevocationTerm(providerUiProperties.getConsentManagement().getActiveRevocationTermId(), locale);
     }
 
+    @Override
+    public Object getActivties(String mrn, Locale locale) {
+        return pcmClient.getActivities(mrn, locale);
+    }
+
 }
