@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
+import gov.samhsa.c2s.provideruiapi.config.ProviderUiApiProperties;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.Feign;
 import feign.FeignException;
@@ -22,19 +23,21 @@ import java.util.Locale;
 @Service
 @Slf4j
 public class PcmServiceImpl implements PcmService {
-    private final PcmClient pcmClient;
-    private final JwtTokenExtractor jwtTokenExtractor;
-    private final ProviderUiProperties providerUiProperties;
-
     private static final boolean CREATED_BY_PATIENT = false;
+    private static final boolean UPDATED_BY_PATIENT = false;
     private static final boolean ATTESTED_BY_PATIENT = false;
     private static final boolean REVOKED_BY_PATIENT = false;
+    private final PcmClient pcmClient;
+    private final JwtTokenExtractor jwtTokenExtractor;
+    private final ProviderUiApiProperties providerUiApiProperties;
 
     @Autowired
-    public PcmServiceImpl(PcmClient pcmClient, JwtTokenExtractor jwtTokenExtractor, ProviderUiProperties providerUiProperties) {
+    public PcmServiceImpl(PcmClient pcmClient,
+                          JwtTokenExtractor jwtTokenExtractor,
+                          ProviderUiApiProperties providerUiApiProperties) {
         this.pcmClient = pcmClient;
         this.jwtTokenExtractor = jwtTokenExtractor;
-        this.providerUiProperties = providerUiProperties;
+        this.providerUiApiProperties = providerUiApiProperties;
     }
 
     @Override
@@ -86,7 +89,7 @@ public class PcmServiceImpl implements PcmService {
     public void updateConsent(String mrn, Long consentId, ConsentDto consentDto) {
         // Get current user authId
         String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        pcmClient.updateConsent(mrn, consentId, consentDto, lastUpdatedBy);
+        pcmClient.updateConsent(mrn, consentId, consentDto, lastUpdatedBy, UPDATED_BY_PATIENT);
 
     }
 
@@ -123,12 +126,12 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public Object getConsentAttestationTerm(Locale locale) {
-        return pcmClient.getConsentAttestationTerm(providerUiProperties.getConsentManagement().getActiveAttestationTermId(), locale);
+        return pcmClient.getConsentAttestationTerm(providerUiApiProperties.getConsentManagement().getActiveAttestationTermId(), locale);
     }
 
     @Override
     public Object getConsentRevocationTerm(Locale locale) {
-        return pcmClient.getConsentRevocationTerm(providerUiProperties.getConsentManagement().getActiveRevocationTermId(), locale);
+        return pcmClient.getConsentRevocationTerm(providerUiApiProperties.getConsentManagement().getActiveRevocationTermId(), locale);
     }
 
 }

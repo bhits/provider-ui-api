@@ -14,17 +14,15 @@ import java.nio.charset.StandardCharsets;
 @ConfigurationProperties(prefix = "c2s.provider-ui")
 @Data
 public class ProviderUiProperties {
+    //TODO: Remove it once wrap inside uaa call
     @NotNull
     @Valid
+    @JsonIgnore
     private Oauth2 oauth2;
 
     @NotNull
     @Valid
     private ProviderPermissions providerPermissions;
-
-    @NotNull
-    @Valid
-    private ConsentManagement consentManagement;
 
     @Data
     public static class ProviderPermissions {
@@ -32,9 +30,13 @@ public class ProviderUiProperties {
         private boolean consentRevokeEnabled = false;
         private boolean userActivationEnabled = true;
         private boolean segmentationEnabled = true;
+        private boolean patientListCardEnabled;
         @NotNull
         @Valid
         private Registration registration;
+        @NotNull
+        @Valid
+        private PatientSearch patientSearch;
     }
 
     @Data
@@ -64,11 +66,12 @@ public class ProviderUiProperties {
     }
 
     @Data
-    public static class ConsentManagement {
+    public static class PatientSearch {
         @NotNull
-        private Long activeAttestationTermId;
-
-        @NotNull
-        private Long activeRevocationTermId;
+        private boolean firstNameEnabled;
+        private boolean lastNameEnabled;
+        private boolean genderEnabled;
+        private boolean dateOfBirthEnabled;
+        private boolean patientIdEnabled;
     }
 }

@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
+import gov.samhsa.c2s.provideruiapi.config.ProviderUiProperties;
 import gov.samhsa.c2s.provideruiapi.infrastructure.UmsClient;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.BaseUmsLookupDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
@@ -21,16 +22,22 @@ import java.util.stream.Collectors;
 @Service
 public class UmsServiceImpl implements UmsService {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
-    @Autowired
-    private UmsClient umsClient;
+    private static final String ROLE_CODE = "patient";
+    private static final int MIN_FIRST_NAME_LENGTH = 4;
+    private static final int MIN_LAST_NAME_LENGTH = 4;
+    private static final int MIN_PATIENT_ID_LENGTH = 4;
+    private final JwtTokenExtractor jwtTokenExtractor;
+    private final UmsClient umsClient;
+    private final ModelMapper modelMapper;
+    private final ProviderUiProperties providerUiProperties;
 
     @Autowired
-    private ModelMapper modelMapper;
-
-    private String ROLE_CODE="patient";
-
-    @Autowired
-    private JwtTokenExtractor jwtTokenExtractor;
+    public UmsServiceImpl(JwtTokenExtractor jwtTokenExtractor, UmsClient umsClient, ModelMapper modelMapper, ProviderUiProperties providerUiProperties) {
+        this.jwtTokenExtractor = jwtTokenExtractor;
+        this.umsClient = umsClient;
+        this.modelMapper = modelMapper;
+        this.providerUiProperties = providerUiProperties;
+    }
 
     @Override
     public PageableDto<UserDto> getAllUsers(Integer page, Integer size) {
@@ -51,6 +58,8 @@ public class UmsServiceImpl implements UmsService {
 
     @Override
     public UserDto registerUser(UserDto userDto) {
+        userDto.setCreatedBy(getLastUpdatedBy());
+        userDto.setLastUpdatedBy(getLastUpdatedBy());
         return modelMapper.map(umsClient.registerUser(modelMapper.map(userDto, UmsUserDto.class)), UserDto.class);
     }
 
@@ -68,12 +77,13 @@ public class UmsServiceImpl implements UmsService {
 
     @Override
     public void updateUser(Long userId, UserDto userDto) {
+        userDto.setLastUpdatedBy(getLastUpdatedBy());
         umsClient.updateUser(userId, modelMapper.map(userDto, UmsUserDto.class));
     }
 
     @Override
     public Object initiateUserActivation(Long userId, String xForwardedProto, String xForwardedHost, int xForwardedPort) {
-        return umsClient.initiateUserActivation(userId, xForwardedProto, xForwardedHost, xForwardedPort);
+        return umsClient.initiateUserActivation(userId, getLastUpdatedBy(), xForwardedProto, xForwardedHost, xForwardedPort);
     }
 
     @Override
@@ -83,21 +93,21 @@ public class UmsServiceImpl implements UmsService {
 
     @Override
     public void disableUser(Long userId) {
-        umsClient.disableUser(userId);
+        umsClient.disableUser(userId, getLastUpdatedBy());
+
     }
 
     @Override
     public void enableUser(Long userId) {
-        umsClient.enableUser(userId);
+        umsClient.enableUser(userId, getLastUpdatedBy());
     }
-
 
     @Override
     public ProfileResponse getProviderProfile() {
         //Get system supported Locales
         List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();
 
-        UmsUserDto umsUserDto=umsClient.getUserById(jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID));
+        UmsUserDto umsUserDto = umsClient.getUserById(jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID));
         return ProfileResponse.builder()
                 .userLocale(umsUserDto.getLocale())
                 .supportedLocales(supportedLocales)
@@ -105,7 +115,6 @@ public class UmsServiceImpl implements UmsService {
                 .lastName(umsUserDto.getLastName())
                 .build();
     }
-
 
     @Override
     public PageableDto<UserDto> searchUsersByDemographic(String firstName,
@@ -120,22 +129,51 @@ public class UmsServiceImpl implements UmsService {
         }.getType();
 
         StringBuilder formatBirthday = new StringBuilder();
-        if(birthDate!=null) {
+        if (birthDate != null) {
             DateTimeFormatter formatters = DateTimeFormatter.ofPattern(DATE_FORMAT);
             formatBirthday.append(birthDate.format(formatters));
         }
 
-        PageableDto<UmsUserDto> pageableUmsUserDto = umsClient.searchUsersByDemographic(firstName,
-                lastName,
-                genderCode,
-                formatBirthday.toString(),mrn, ROLE_CODE,page, size);
-        List<UserDto> userDtos = pageableUmsUserDto.getContent().stream()
-                .map(umsUserDto -> modelMapper.map(umsUserDto, UserDto.class))
-                .collect(Collectors.toList());
+        PageableDto<UserDto> pageableUserDto = null;
 
-        PageableDto<UserDto> pageableUserDto = modelMapper.map(pageableUmsUserDto, pageableUserDtoType);
-        pageableUserDto.setContent(userDtos);
+        if (canSearchBasedOnConfiguration(firstName, lastName, genderCode, formatBirthday.toString(), mrn)) {
+            PageableDto<UmsUserDto> pageableUmsUserDto = umsClient.searchUsersByDemographic(
+                    firstName,
+                    lastName,
+                    genderCode,
+                    formatBirthday.toString(),
+                    mrn,
+                    ROLE_CODE, page, size);
+            List<UserDto> userDtos = pageableUmsUserDto.getContent().stream()
+                    .map(umsUserDto -> modelMapper.map(umsUserDto, UserDto.class))
+                    .collect(Collectors.toList());
+
+            pageableUserDto = modelMapper.map(pageableUmsUserDto, pageableUserDtoType);
+            pageableUserDto.setContent(userDtos);
+        } else {
+            pageableUserDto = new PageableDto<>();
+        }
 
         return pageableUserDto;
+    }
+
+    private boolean canSearchBasedOnConfiguration(String firstName, String lastName, String gender, String dateOfBirth, String mrn) {
+        if (providerUiProperties.getProviderPermissions().getPatientSearch().isFirstNameEnabled() && (firstName == null || firstName.length() < MIN_FIRST_NAME_LENGTH)) {
+            return false;
+        } else if (providerUiProperties.getProviderPermissions().getPatientSearch().isLastNameEnabled() && (lastName == null || lastName.length() < MIN_LAST_NAME_LENGTH)) {
+            return false;
+        } else if (providerUiProperties.getProviderPermissions().getPatientSearch().isGenderEnabled() && (gender == null)) {
+            return false;
+        } else if (providerUiProperties.getProviderPermissions().getPatientSearch().isDateOfBirthEnabled() && (dateOfBirth == null)) {
+            return false;
+        } else if (providerUiProperties.getProviderPermissions().getPatientSearch().isPatientIdEnabled() && (mrn == null || mrn.length() < MIN_PATIENT_ID_LENGTH)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private String getLastUpdatedBy() {
+        return jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
     }
 }
