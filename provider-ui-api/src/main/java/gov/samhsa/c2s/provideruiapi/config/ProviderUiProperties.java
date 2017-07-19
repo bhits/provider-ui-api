@@ -68,10 +68,14 @@ public class ProviderUiProperties {
     @Data
     public static class PatientSearch {
         @NotNull
-        private boolean firstNameEnabled;
-        private boolean lastNameEnabled;
-        private boolean genderEnabled;
-        private boolean dateOfBirthEnabled;
-        private boolean patientIdEnabled;
+        private boolean firstNameRequired;
+        @NotNull
+        private boolean lastNameRequired;
+        @NotNull
+        private boolean genderRequired;
+        @NotNull
+        private boolean dateOfBirthRequired;
+        @NotNull
+        private boolean patientIdRequired;
     }
 }
