@@ -93,13 +93,14 @@ public interface PcmClient {
 
     @RequestMapping(value = "/consentAttestationTerm", method = RequestMethod.GET)
     Object getConsentAttestationTerm(@RequestParam(value = "id", required = false) Long id,
-                                             @RequestHeader("Accept-Language") Locale locale);
+                                     @RequestHeader("Accept-Language") Locale locale);
 
     @RequestMapping(value = "/consentRevocationTerm", method = RequestMethod.GET)
     Object getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id,
-                                            @RequestHeader("Accept-Language") Locale locale);
-
-    @RequestMapping(value = "/patients/{patientId}/activities", method = RequestMethod.GET)
-    Object getActivities(@PathVariable("patientId") String patientId,
                                     @RequestHeader("Accept-Language") Locale locale);
+
+    @RequestMapping(value = "/patients/{patientId}/consent-activities", method = RequestMethod.GET)
+    PageableDto<Object> getConsentActivities(@PathVariable("patientId") String patientId,
+                                             @RequestParam(value = "page", required = false) Integer page,
+                                             @RequestParam(value = "size", required = false) Integer size);
 }

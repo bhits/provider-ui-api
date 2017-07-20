@@ -131,9 +131,10 @@ public class PcmRestController {
         return pcmService.getConsentRevocationTerm(locale);
     }
 
-    @GetMapping("/patients/{mrn}/activities")
-    public Object getActivities(@PathVariable String mrn,
-                                @RequestHeader("Accept-Language") Locale locale) {
-        return pcmService.getActivties(mrn, locale);
+    @GetMapping("/patients/{mrn}/consent-activities")
+    public Object getConsentActivities(@PathVariable String mrn,
+                                       @RequestParam(value = "page", required = false) Integer page,
+                                       @RequestParam(value = "size", required = false) Integer size) {
+        return pcmService.getConsentActivities(mrn, page, size);
     }
 }

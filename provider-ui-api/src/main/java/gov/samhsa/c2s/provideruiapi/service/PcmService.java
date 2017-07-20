@@ -40,5 +40,5 @@ public interface PcmService {
 
     Object getConsentRevocationTerm(Locale locale);
 
-    Object getActivties(String mrn, Locale locale);
+    Object getConsentActivities(String mrn, Integer page, Integer size);
 }

@@ -7,10 +7,13 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.provideruiapi.infrastructure.dto.TempDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -120,8 +123,11 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public Object getActivties(String mrn, Locale locale) {
-        return pcmClient.getActivities(mrn, locale);
+    public PageableDto<Object> getConsentActivities(String mrn, Integer page, Integer size) {
+        return pcmClient.getConsentActivities(mrn, page, size);
+
     }
+
+
 
 }
