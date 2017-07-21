@@ -26,15 +26,16 @@ c2s:
       registration:
         duplicate-check-enabled: false
       patient-list-card-enabled: true
+      patient-search:
+        first-name-required: true
+        last-name-required: true
+        gender-required: false
+        date-of-birth-required: false
+        patient-id-required: false
+  provider-ui-api:
     consent-management:
       active-attestation-term-id: 3
       active-revocation-term-id: 1
-    search:
-      first-name-enabled: true
-      last-name-enabled: true
-      gender-enabled: false
-      date-of-birth-enabled: false
-      patient-id-enabled: false
 ---
 spring.profiles: standalone-ssl
 spring:
