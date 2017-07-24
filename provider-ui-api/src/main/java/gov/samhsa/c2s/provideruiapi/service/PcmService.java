@@ -4,21 +4,19 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 
-import java.util.List;
 import java.util.Locale;
 
 public interface PcmService {
-    List<Object> getProviders(String mrn);
+    Object getProviders(String mrn);
 
     void saveProviders(String mrn, IdentifiersDto providerIdentifiersDto);
 
     void deleteProvider(String mrn, Long providerId);
 
-    List<Object> getPurposes();
+    Object getPurposes();
 
-    PageableDto<Object> getConsents(String mrn, Integer page, Integer size);
+    Object getConsents(String mrn, Integer page, Integer size);
 
     Object getConsent(String mrn, Long consentId, String format);
 
@@ -39,4 +37,6 @@ public interface PcmService {
     Object getConsentAttestationTerm(Locale locale);
 
     Object getConsentRevocationTerm(Locale locale);
+
+    Object getConsentActivities(String mrn, Integer page, Integer size);
 }
