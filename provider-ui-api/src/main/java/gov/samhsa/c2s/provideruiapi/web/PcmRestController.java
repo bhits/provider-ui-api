@@ -4,7 +4,6 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.service.PcmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Locale;
 
 @RestController
@@ -36,7 +34,7 @@ public class PcmRestController {
     }
 
     @GetMapping("/patients/{mrn}/providers")
-    public List<Object> getProviders(@PathVariable String mrn) {
+    public Object getProviders(@PathVariable String mrn) {
         return pcmService.getProviders(mrn);
     }
 
@@ -55,14 +53,14 @@ public class PcmRestController {
     }
 
     @GetMapping("/purposes")
-    public List<Object> getPurposes() {
+    public Object getPurposes() {
         return pcmService.getPurposes();
     }
 
     @GetMapping("/patients/{mrn}/consents")
-    public PageableDto<Object> getConsents(@PathVariable String mrn,
-                                           @RequestParam(value = "page", required = false) Integer page,
-                                           @RequestParam(value = "size", required = false) Integer size) {
+    public Object getConsents(@PathVariable String mrn,
+                              @RequestParam(value = "page", required = false) Integer page,
+                              @RequestParam(value = "size", required = false) Integer size) {
         return pcmService.getConsents(mrn, page, size);
     }
 

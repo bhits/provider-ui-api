@@ -1,23 +1,18 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
-import gov.samhsa.c2s.provideruiapi.config.ProviderUiApiProperties;
-import com.netflix.hystrix.exception.HystrixRuntimeException;
-import feign.Feign;
 import feign.FeignException;
-import gov.samhsa.c2s.provideruiapi.config.ProviderUiProperties;
+import gov.samhsa.c2s.provideruiapi.config.ProviderUiApiProperties;
 import gov.samhsa.c2s.provideruiapi.infrastructure.PcmClient;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.provideruiapi.service.exception.DuplicateConsentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -41,7 +36,7 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public List<Object> getProviders(String mrn) {
+    public Object getProviders(String mrn) {
         return pcmClient.getProviders(mrn);
     }
 
@@ -56,12 +51,12 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public List<Object> getPurposes() {
+    public Object getPurposes() {
         return pcmClient.getPurposes();
     }
 
     @Override
-    public PageableDto<Object> getConsents(String mrn, Integer page, Integer size) {
+    public Object getConsents(String mrn, Integer page, Integer size) {
         return pcmClient.getConsents(mrn, page, size);
     }
 
@@ -135,7 +130,7 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public PageableDto<Object> getConsentActivities(String mrn, Integer page, Integer size) {
+    public Object getConsentActivities(String mrn, Integer page, Integer size) {
         return pcmClient.getConsentActivities(mrn, page, size);
 
     }

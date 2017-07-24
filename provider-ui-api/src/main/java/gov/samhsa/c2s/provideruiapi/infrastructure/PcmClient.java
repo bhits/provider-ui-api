@@ -4,7 +4,6 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Locale;
 
 @FeignClient("pcm")
 public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/providers", method = RequestMethod.GET)
-    List<Object> getProviders(@PathVariable("patientId") String patientId);
+    Object getProviders(@PathVariable("patientId") String patientId);
 
     @RequestMapping(value = "/patients/{patientId}/providers", method = RequestMethod.POST)
     void saveProviders(@PathVariable("patientId") String patientId,
@@ -34,12 +32,12 @@ public interface PcmClient {
                         @PathVariable("providerId") Long providerId);
 
     @RequestMapping(value = "/purposes", method = RequestMethod.GET)
-    List<Object> getPurposes();
+    Object getPurposes();
 
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.GET)
-    PageableDto<Object> getConsents(@PathVariable("patientId") String patientId,
-                                    @RequestParam(value = "page", required = false) Integer page,
-                                    @RequestParam(value = "size", required = false) Integer size);
+    Object getConsents(@PathVariable("patientId") String patientId,
+                       @RequestParam(value = "page", required = false) Integer page,
+                       @RequestParam(value = "size", required = false) Integer size);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.GET)
     Object getConsent(@PathVariable("patientId") String patientId,
@@ -100,7 +98,7 @@ public interface PcmClient {
                                     @RequestHeader("Accept-Language") Locale locale);
 
     @RequestMapping(value = "/patients/{patientId}/consent-activities", method = RequestMethod.GET)
-    PageableDto<Object> getConsentActivities(@PathVariable("patientId") String patientId,
-                                             @RequestParam(value = "page", required = false) Integer page,
-                                             @RequestParam(value = "size", required = false) Integer size);
+    Object getConsentActivities(@PathVariable("patientId") String patientId,
+                                @RequestParam(value = "page", required = false) Integer page,
+                                @RequestParam(value = "size", required = false) Integer size);
 }
