@@ -100,5 +100,6 @@ public interface PcmClient {
     @RequestMapping(value = "/patients/{patientId}/consent-activities", method = RequestMethod.GET)
     Object getConsentActivities(@PathVariable("patientId") String patientId,
                                 @RequestParam(value = "page", required = false) Integer page,
-                                @RequestParam(value = "size", required = false) Integer size);
+                                @RequestParam(value = "size", required = false) Integer size,
+                                @RequestHeader("Accept-Language") Locale locale);
 }

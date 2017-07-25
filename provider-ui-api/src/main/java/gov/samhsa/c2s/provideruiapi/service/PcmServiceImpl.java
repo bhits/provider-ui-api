@@ -9,7 +9,6 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.provideruiapi.service.exception.DuplicateConsentException;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,7 +72,7 @@ public class PcmServiceImpl implements PcmService {
             String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
             pcmClient.saveConsent(mrn, consentDto, locale, createdBy, CREATED_BY_PATIENT);
         } catch (FeignException feignErr) {
-            if(feignErr.status() == 409){
+            if (feignErr.status() == 409) {
                 log.info("The specified patient already has this consent", feignErr);
                 throw new DuplicateConsentException("Already created same consent.");
             }
@@ -130,8 +129,8 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public Object getConsentActivities(String mrn, Integer page, Integer size) {
-        return pcmClient.getConsentActivities(mrn, page, size);
+    public Object getConsentActivities(String mrn, Integer page, Integer size, Locale locale) {
+        return pcmClient.getConsentActivities(mrn, page, size, locale);
 
     }
 
