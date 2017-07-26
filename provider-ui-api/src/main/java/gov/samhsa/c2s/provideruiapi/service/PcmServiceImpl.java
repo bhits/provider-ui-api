@@ -11,6 +11,7 @@ import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.provideruiapi.service.exception.DuplicateConsentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -129,8 +130,9 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public Object getConsentActivities(String mrn, Integer page, Integer size, Locale locale) {
-        return pcmClient.getConsentActivities(mrn, page, size, locale);
+    public Object getConsentActivities(String mrn, Integer page, Integer size) {
+        Locale selectedLocale = LocaleContextHolder.getLocale();
+        return pcmClient.getConsentActivities(mrn, page, size, selectedLocale);
 
     }
 
