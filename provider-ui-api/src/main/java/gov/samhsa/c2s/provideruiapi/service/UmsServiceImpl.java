@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
+import feign.FeignException;
 import gov.samhsa.c2s.provideruiapi.config.ProviderUiProperties;
 import gov.samhsa.c2s.provideruiapi.infrastructure.UmsClient;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.BaseUmsLookupDto;
@@ -8,6 +9,9 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ProfileResponse;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.UmsUserDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
+import gov.samhsa.c2s.provideruiapi.service.exception.DuplicateConsentException;
+import gov.samhsa.c2s.provideruiapi.service.exception.DuplicateIdentifierValueException;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +20,12 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.DuplicateFormatFlagsException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UmsServiceImpl implements UmsService {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String ROLE_CODE = "patient";
@@ -58,9 +64,22 @@ public class UmsServiceImpl implements UmsService {
 
     @Override
     public UserDto registerUser(UserDto userDto) {
+
+        final String identifierDuplicateAssignErrorMsg = "this identifier system identifiers can only be assigned once";
+        UmsUserDto tempUmsUserDto = new UmsUserDto();
         userDto.setCreatedBy(getLastUpdatedBy());
         userDto.setLastUpdatedBy(getLastUpdatedBy());
-        return modelMapper.map(umsClient.registerUser(modelMapper.map(userDto, UmsUserDto.class)), UserDto.class);
+        try{
+            tempUmsUserDto = umsClient.registerUser(modelMapper.map(userDto, UmsUserDto.class));
+        }catch(FeignException feignErr){
+            String errorMessage = feignErr.getMessage();
+            if(errorMessage.contains(identifierDuplicateAssignErrorMsg)){
+                log.info("This identifier value from the identifier system can only be assigned once.");
+                throw new DuplicateIdentifierValueException("This identifier value from the identifier system can only be assigned once.");
+            }
+        }
+        return modelMapper.map(tempUmsUserDto, UserDto.class);
+
     }
 
     @Override
