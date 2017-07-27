@@ -15,10 +15,10 @@ public interface TryPolicyClient {
     @RequestMapping(value = "/sampleDocuments", method = RequestMethod.GET)
     Object getSampleDocuments();
 
-    @RequestMapping(value = "/tryPolicySampleXHTML/{patientId}/{consentId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/tryPolicySampleXHTML/{patientId}", method = RequestMethod.GET)
     Object tryPolicyXHTMLWithSampleDoc(@PathVariable("patientId") String patientId,
-                                       @PathVariable("consentId") String consentId,
+                                       @RequestParam("consentId") String consentId,
+                                       @RequestParam("documentId") int documentId,
                                        @RequestParam("purposeOfUseCode") String purposeOfUseCode,
-                                       @RequestParam("indexOfDocuments") String indexOfDocuments,
                                        @RequestHeader("Accept-Language") Locale locale);
 }
