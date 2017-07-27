@@ -20,10 +20,10 @@ public class TryPolicyRestController {
         return tryPolicyService.getSampleDocuments();
     }
 
-    @GetMapping("/tryPolicySampleXHTML/{patientId}")
+    @GetMapping("/tryPolicyXHTML/{patientId}")
     public Object tryPolicyXHTMLWithSampleDoc(@PathVariable String patientId,
                                               @RequestParam String consentId,
-                                              @RequestParam int documentId,
+                                              @RequestParam String documentId,
                                               @RequestParam String purposeOfUseCode) {
         return tryPolicyService.tryPolicyXHTMLWithSampleDoc(patientId, consentId, documentId, purposeOfUseCode);
     }

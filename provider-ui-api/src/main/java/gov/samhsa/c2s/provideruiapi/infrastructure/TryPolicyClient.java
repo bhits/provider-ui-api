@@ -18,7 +18,7 @@ public interface TryPolicyClient {
     @RequestMapping(value = "/tryPolicyXHTML/{patientId}", method = RequestMethod.GET)
     Object tryPolicyXHTMLWithSampleDoc(@PathVariable("patientId") String patientId,
                                        @RequestParam("consentId") String consentId,
-                                       @RequestParam("documentId") int documentId,
+                                       @RequestParam("documentId") String documentId,
                                        @RequestParam("purposeOfUseCode") String purposeOfUseCode,
                                        @RequestHeader("Accept-Language") Locale locale);
 }

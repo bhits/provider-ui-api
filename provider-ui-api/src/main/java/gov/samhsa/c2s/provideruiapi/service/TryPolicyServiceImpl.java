@@ -17,7 +17,7 @@ public class TryPolicyServiceImpl implements TryPolicyService {
     }
 
     @Override
-    public Object tryPolicyXHTMLWithSampleDoc(String patientId, String consentId, int documentId, String purposeOfUseCode) {
+    public Object tryPolicyXHTMLWithSampleDoc(String patientId, String consentId, String documentId, String purposeOfUseCode) {
         return tryPolicyClient.tryPolicyXHTMLWithSampleDoc(patientId, consentId, documentId, purposeOfUseCode, UserInfoHelper.getSelectedLocale());
     }
 }
