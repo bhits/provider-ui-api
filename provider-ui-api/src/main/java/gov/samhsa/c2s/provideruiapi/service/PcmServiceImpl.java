@@ -1,39 +1,43 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
-import gov.samhsa.c2s.provideruiapi.config.ProviderUiProperties;
+import feign.FeignException;
+import gov.samhsa.c2s.provideruiapi.config.ProviderUiApiProperties;
 import gov.samhsa.c2s.provideruiapi.infrastructure.PcmClient;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
+import gov.samhsa.c2s.provideruiapi.service.exception.DuplicateConsentException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Locale;
 
 @Service
+@Slf4j
 public class PcmServiceImpl implements PcmService {
-    private final PcmClient pcmClient;
-    private final JwtTokenExtractor jwtTokenExtractor;
-    private final ProviderUiProperties providerUiProperties;
-
     private static final boolean CREATED_BY_PATIENT = false;
     private static final boolean UPDATED_BY_PATIENT = false;
     private static final boolean ATTESTED_BY_PATIENT = false;
     private static final boolean REVOKED_BY_PATIENT = false;
+    private final PcmClient pcmClient;
+    private final JwtTokenExtractor jwtTokenExtractor;
+    private final ProviderUiApiProperties providerUiApiProperties;
 
     @Autowired
-    public PcmServiceImpl(PcmClient pcmClient, JwtTokenExtractor jwtTokenExtractor, ProviderUiProperties providerUiProperties) {
+    public PcmServiceImpl(PcmClient pcmClient,
+                          JwtTokenExtractor jwtTokenExtractor,
+                          ProviderUiApiProperties providerUiApiProperties) {
         this.pcmClient = pcmClient;
         this.jwtTokenExtractor = jwtTokenExtractor;
-        this.providerUiProperties = providerUiProperties;
+        this.providerUiApiProperties = providerUiApiProperties;
     }
 
     @Override
-    public List<Object> getProviders(String mrn) {
+    public Object getProviders(String mrn) {
         return pcmClient.getProviders(mrn);
     }
 
@@ -48,12 +52,12 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public List<Object> getPurposes() {
+    public Object getPurposes() {
         return pcmClient.getPurposes();
     }
 
     @Override
-    public PageableDto<Object> getConsents(String mrn, Integer page, Integer size) {
+    public Object getConsents(String mrn, Integer page, Integer size) {
         return pcmClient.getConsents(mrn, page, size);
     }
 
@@ -65,9 +69,15 @@ public class PcmServiceImpl implements PcmService {
     @Override
     public void saveConsent(String mrn, ConsentDto consentDto, Locale locale) {
         // Get current user authId
-        String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-
-        pcmClient.saveConsent(mrn, consentDto, locale, createdBy, CREATED_BY_PATIENT);
+        try {
+            String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+            pcmClient.saveConsent(mrn, consentDto, locale, createdBy, CREATED_BY_PATIENT);
+        } catch (FeignException feignErr) {
+            if (feignErr.status() == 409) {
+                log.info("The specified patient already has this consent", feignErr);
+                throw new DuplicateConsentException("Already created same consent.");
+            }
+        }
     }
 
     @Override
@@ -111,12 +121,20 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public Object getConsentAttestationTerm(Locale locale) {
-        return pcmClient.getConsentAttestationTerm(providerUiProperties.getConsentManagement().getActiveAttestationTermId(), locale);
+        return pcmClient.getConsentAttestationTerm(providerUiApiProperties.getConsentManagement().getActiveAttestationTermId(), locale);
     }
 
     @Override
     public Object getConsentRevocationTerm(Locale locale) {
-        return pcmClient.getConsentRevocationTerm(providerUiProperties.getConsentManagement().getActiveRevocationTermId(), locale);
+        return pcmClient.getConsentRevocationTerm(providerUiApiProperties.getConsentManagement().getActiveRevocationTermId(), locale);
     }
+
+    @Override
+    public Object getConsentActivities(String mrn, Integer page, Integer size) {
+        Locale selectedLocale = LocaleContextHolder.getLocale();
+        return pcmClient.getConsentActivities(mrn, page, size, selectedLocale);
+
+    }
+
 
 }
