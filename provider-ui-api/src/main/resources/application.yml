@@ -30,7 +30,7 @@ c2s:
       active-attestation-term-id: 3
       active-revocation-term-id: 1
     search:
-      first-name-enabled: true
+      first-name-enabled: false
       last-name-enabled: true
       gender-enabled: false
       date-of-birth-enabled: false
