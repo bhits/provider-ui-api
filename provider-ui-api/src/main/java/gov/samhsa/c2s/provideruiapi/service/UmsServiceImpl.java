@@ -9,7 +9,6 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ProfileResponse;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.UmsUserDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
-import gov.samhsa.c2s.provideruiapi.service.exception.DuplicateConsentException;
 import gov.samhsa.c2s.provideruiapi.service.exception.DuplicateIdentifierValueException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.DuplicateFormatFlagsException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,11 +67,11 @@ public class UmsServiceImpl implements UmsService {
         UmsUserDto tempUmsUserDto = new UmsUserDto();
         userDto.setCreatedBy(getLastUpdatedBy());
         userDto.setLastUpdatedBy(getLastUpdatedBy());
-        try{
+        try {
             tempUmsUserDto = umsClient.registerUser(modelMapper.map(userDto, UmsUserDto.class));
-        }catch(FeignException feignErr){
+        } catch (FeignException feignErr) {
             String errorMessage = feignErr.getMessage();
-            if(errorMessage.contains(identifierDuplicateAssignErrorMsg)){
+            if (errorMessage.contains(identifierDuplicateAssignErrorMsg)) {
                 log.info("This identifier value from the identifier system can only be assigned once.");
                 throw new DuplicateIdentifierValueException("This identifier value from the identifier system can only be assigned once.");
             }
@@ -101,7 +99,7 @@ public class UmsServiceImpl implements UmsService {
     }
 
     @Override
-    public Object initiateUserActivation(Long userId, String xForwardedProto, String xForwardedHost, int xForwardedPort) {
+    public Object initiateUserActivation(Long userId, String xForwardedProto, String xForwardedHost, String xForwardedPort) {
         return umsClient.initiateUserActivation(userId, getLastUpdatedBy(), xForwardedProto, xForwardedHost, xForwardedPort);
     }
 
