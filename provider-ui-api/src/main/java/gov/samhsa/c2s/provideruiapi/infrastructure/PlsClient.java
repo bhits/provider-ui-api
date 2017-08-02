@@ -15,6 +15,10 @@ public interface PlsClient {
     String X_FORWARDED_PORT = "X-Forwarded-Port";
     String X_FORWARDED_PREFIX = "X-Forwarded-Prefix";
 
+    interface Projection {
+        String FLATTEN_SMALL_PROVIDER = "FlattenSmallProvider";
+    }
+
     @RequestMapping(value = "/providers/search/query", method = RequestMethod.GET)
     Object searchProviders(
             @RequestParam(value = "state", required = false) String state,
@@ -28,21 +32,17 @@ public interface PlsClient {
             @RequestParam(value = "page", required = false) String page,
             @RequestParam(value = "size", required = false) String size,
             @RequestParam(value = "sort", required = false) String sort,
-            @RequestParam(value = "projection", defaultValue = Projection.FLATTEN_SMALL_PROVIDER) String projection,
+            @RequestParam(value = "projection") String projection,
             @RequestHeader(X_FORWARDED_PROTO) String xForwardedProto,
             @RequestHeader(X_FORWARDED_HOST) String xForwardedHost,
             @RequestHeader(X_FORWARDED_PREFIX) String xForwardedPrefix,
-            @RequestHeader(X_FORWARDED_PORT) int xForwardedPort);
-
-    interface Projection {
-        String FLATTEN_SMALL_PROVIDER = "FlattenSmallProvider";
-    }
+            @RequestHeader(X_FORWARDED_PORT) String xForwardedPort);
 
     @RequestMapping(value = "/providers/{npi}", method = RequestMethod.GET)
     FlattenedSmallProviderDto searchByNpi(@PathVariable("npi") String npi);
 
     @RequestMapping(value = "/stateCodes", method = RequestMethod.GET)
     Object getStateCodes(@RequestParam(value = "size", required = false) int size,
-                                                @RequestParam(value = "page", required = false) int page);
+                         @RequestParam(value = "page", required = false) int page);
 
 }
