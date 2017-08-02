@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
 @FeignClient("ums")
 public interface UmsClient {
@@ -42,7 +41,7 @@ public interface UmsClient {
                                   @RequestParam(value = "lastUpdatedBy") String lastUpdatedBy,
                                   @RequestHeader(X_FORWARDED_PROTO) String xForwardedProto,
                                   @RequestHeader(X_FORWARDED_HOST) String xForwardedHost,
-                                  @RequestHeader(X_FORWARDED_PORT) int xForwardedPort);
+                                  @RequestHeader(X_FORWARDED_PORT) String xForwardedPort);
 
     @RequestMapping(value = "/users/{userId}/activation", method = RequestMethod.GET)
     Object getCurrentUserCreationInfo(@PathVariable("userId") Long userId);
