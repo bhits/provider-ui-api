@@ -6,9 +6,9 @@ The Provider User Interface API (provider-ui-api) is a Backend For Frontend (BFF
 
 # Supported Source Code Tags and Current `Dockerfile` Link
 
-[`0.1.0 (latest)`](https://github.com/bhits-dev/provider-ui-api/releases/tag/0.1.0)
+[`0.2.0 (latest)`](https://github.com/bhits-dev/provider-ui-api/releases/tag/0.2.0), [`0.1.0`](https://github.com/bhits-dev/provider-ui-api/releases/tag/0.1.0)
 
-[`Current Dockerfile`](https://github.com/bhits-dev/provider-ui-api/blob/master/provider-ui-api/src/main/docker/Dockerfile)
+[`Current Dockerfile`](../provider-ui-api/src/main/docker/Dockerfile)
 
 For more information about this image, the source code, and its history, please see the [GitHub repository](https://github.com/bhits-dev/provider-ui-api).
 
