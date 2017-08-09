@@ -52,13 +52,13 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public Object getPurposes(Locale locale) {
-        return pcmClient.getPurposes(locale);
+    public Object getPurposes() {
+        return pcmClient.getPurposes(LocaleContextHolder.getLocale());
     }
 
     @Override
-    public Object getConsents(String mrn, Integer page, Integer size, Locale locale) {
-        return pcmClient.getConsents(mrn, page, size, locale);
+    public Object getConsents(String mrn, Integer page, Integer size) {
+        return pcmClient.getConsents(mrn, page, size, LocaleContextHolder.getLocale());
     }
 
     @Override
@@ -67,11 +67,11 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public void saveConsent(String mrn, ConsentDto consentDto, Locale locale) {
+    public void saveConsent(String mrn, ConsentDto consentDto) {
         // Get current user authId
         try {
             String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-            pcmClient.saveConsent(mrn, consentDto, locale, createdBy, CREATED_BY_PATIENT);
+            pcmClient.saveConsent(mrn, consentDto, LocaleContextHolder.getLocale(), createdBy, CREATED_BY_PATIENT);
         } catch (FeignException feignErr) {
             if (feignErr.status() == 409) {
                 log.info("The specified patient already has this consent", feignErr);
@@ -120,13 +120,13 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public Object getConsentAttestationTerm(Locale locale) {
-        return pcmClient.getConsentAttestationTerm(providerUiApiProperties.getConsentManagement().getActiveAttestationTermId(), locale);
+    public Object getConsentAttestationTerm() {
+        return pcmClient.getConsentAttestationTerm(providerUiApiProperties.getConsentManagement().getActiveAttestationTermId(), LocaleContextHolder.getLocale());
     }
 
     @Override
-    public Object getConsentRevocationTerm(Locale locale) {
-        return pcmClient.getConsentRevocationTerm(providerUiApiProperties.getConsentManagement().getActiveRevocationTermId(), locale);
+    public Object getConsentRevocationTerm() {
+        return pcmClient.getConsentRevocationTerm(providerUiApiProperties.getConsentManagement().getActiveRevocationTermId(), LocaleContextHolder.getLocale());
     }
 
     @Override

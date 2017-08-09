@@ -14,13 +14,13 @@ public interface PcmService {
 
     void deleteProvider(String mrn, Long providerId);
 
-    Object getPurposes(Locale locale);
+    Object getPurposes();
 
-    Object getConsents(String mrn, Integer page, Integer size,Locale locale);
+    Object getConsents(String mrn, Integer page, Integer size);
 
     Object getConsent(String mrn, Long consentId, String format);
 
-    void saveConsent(String mrn, ConsentDto consentDto, Locale locale);
+    void saveConsent(String mrn, ConsentDto consentDto);
 
     void updateConsent(String mrn, Long consentId, ConsentDto consentDto);
 
@@ -34,9 +34,9 @@ public interface PcmService {
 
     void revokeConsent(String mrn, Long consentId, ConsentRevocationDto consentRevocationDto);
 
-    Object getConsentAttestationTerm(Locale locale);
+    Object getConsentAttestationTerm();
 
-    Object getConsentRevocationTerm(Locale locale);
+    Object getConsentRevocationTerm();
 
     Object getConsentActivities(String mrn, Integer page, Integer size);
 }
