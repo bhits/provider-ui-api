@@ -14,9 +14,9 @@ public interface PcmService {
 
     void deleteProvider(String mrn, Long providerId);
 
-    Object getPurposes();
+    Object getPurposes(Locale locale);
 
-    Object getConsents(String mrn, Integer page, Integer size);
+    Object getConsents(String mrn, Integer page, Integer size,Locale locale);
 
     Object getConsent(String mrn, Long consentId, String format);
 

@@ -52,13 +52,13 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public Object getPurposes() {
-        return pcmClient.getPurposes();
+    public Object getPurposes(Locale locale) {
+        return pcmClient.getPurposes(locale);
     }
 
     @Override
-    public Object getConsents(String mrn, Integer page, Integer size) {
-        return pcmClient.getConsents(mrn, page, size);
+    public Object getConsents(String mrn, Integer page, Integer size, Locale locale) {
+        return pcmClient.getConsents(mrn, page, size, locale);
     }
 
     @Override

@@ -53,15 +53,16 @@ public class PcmRestController {
     }
 
     @GetMapping("/purposes")
-    public Object getPurposes() {
-        return pcmService.getPurposes();
+    public Object getPurposes(@RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getPurposes(locale);
     }
 
     @GetMapping("/patients/{mrn}/consents")
     public Object getConsents(@PathVariable String mrn,
                               @RequestParam(value = "page", required = false) Integer page,
-                              @RequestParam(value = "size", required = false) Integer size) {
-        return pcmService.getConsents(mrn, page, size);
+                              @RequestParam(value = "size", required = false) Integer size,
+                              @RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getConsents(mrn, page, size, locale);
     }
 
     @GetMapping("/patients/{mrn}/consents/{consentId}")
