@@ -69,7 +69,7 @@ public class UmsRestController {
     public Object initiateUserActivation(@PathVariable Long userId,
                                          @RequestHeader(X_FORWARDED_PROTO) String xForwardedProto,
                                          @RequestHeader(X_FORWARDED_HOST) String xForwardedHost,
-                                         @RequestHeader(X_FORWARDED_PORT) int xForwardedPort) {
+                                         @RequestHeader(X_FORWARDED_PORT) String xForwardedPort) {
         return umsService.initiateUserActivation(userId, xForwardedProto, xForwardedHost, xForwardedPort);
     }
 
@@ -97,6 +97,6 @@ public class UmsRestController {
                                                          @RequestParam(value = "mrn", required = false) String mrn,
                                                          @RequestParam(value = "page", required = false) Integer page,
                                                          @RequestParam(value = "size", required = false) Integer size) {
-        return umsService.searchUsersByDemographic(firstName,lastName,birthDate,genderCode,mrn,page, size);
+        return umsService.searchUsersByDemographic(firstName, lastName, birthDate, genderCode, mrn, page, size);
     }
 }
