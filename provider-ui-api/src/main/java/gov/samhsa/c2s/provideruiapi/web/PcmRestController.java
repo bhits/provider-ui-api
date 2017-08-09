@@ -88,8 +88,8 @@ public class PcmRestController {
     @PostMapping("/patients/{mrn}/consents")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveConsent(@PathVariable String mrn,
-                            @Valid @RequestBody ConsentDto consentDto, @RequestHeader("Accept-Language") Locale locale) {
-        pcmService.saveConsent(mrn, consentDto, locale);
+                            @Valid @RequestBody ConsentDto consentDto) {
+        pcmService.saveConsent(mrn, consentDto);
     }
 
     @PutMapping("/patients/{mrn}/consents/{consentId}")
@@ -120,13 +120,13 @@ public class PcmRestController {
     }
 
     @GetMapping("/consentAttestationTerm")
-    public Object getConsentAttestationTerm(@RequestHeader("Accept-Language") Locale locale) {
-        return pcmService.getConsentAttestationTerm(locale);
+    public Object getConsentAttestationTerm() {
+        return pcmService.getConsentAttestationTerm();
     }
 
     @GetMapping("/consentRevocationTerm")
-    public Object getConsentRevocationTerm(@RequestHeader("Accept-Language") Locale locale) {
-        return pcmService.getConsentRevocationTerm(locale);
+    public Object getConsentRevocationTerm() {
+        return pcmService.getConsentRevocationTerm();
     }
 
     @GetMapping("/patients/{mrn}/consent-activities")

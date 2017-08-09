@@ -32,12 +32,13 @@ public interface PcmClient {
                         @PathVariable("providerId") Long providerId);
 
     @RequestMapping(value = "/purposes", method = RequestMethod.GET)
-    Object getPurposes();
+    Object getPurposes(@RequestHeader("Accept-Language") Locale locale);
 
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.GET)
     Object getConsents(@PathVariable("patientId") String patientId,
                        @RequestParam(value = "page", required = false) Integer page,
-                       @RequestParam(value = "size", required = false) Integer size);
+                       @RequestParam(value = "size", required = false) Integer size,
+                       @RequestHeader("Accept-Language") Locale locale);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.GET)
     Object getConsent(@PathVariable("patientId") String patientId,
