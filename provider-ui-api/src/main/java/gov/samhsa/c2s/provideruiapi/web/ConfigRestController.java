@@ -15,12 +15,6 @@ public class ConfigRestController {
         this.providerUiProperties = providerUiProperties;
     }
 
-    //TODO: Remove it once wrap inside uaa call
-    @GetMapping("/config/basicAuthorizationHeader")
-    public ProviderUiProperties.Oauth2 getConfig() {
-        return providerUiProperties.getOauth2();
-    }
-
     @GetMapping("/config")
     public ProviderUiProperties getProviderConfig() {
         return providerUiProperties;
