@@ -124,10 +124,12 @@ public class UmsServiceImpl implements UmsService {
         //Get system supported Locales
         List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();
 
+        String currentUsername = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_NAME);
         UmsUserDto umsUserDto = umsClient.getUserById(jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID));
         return ProfileResponse.builder()
                 .userLocale(umsUserDto.getLocale())
                 .supportedLocales(supportedLocales)
+                .username(currentUsername)
                 .firstName(umsUserDto.getFirstName())
                 .lastName(umsUserDto.getLastName())
                 .build();
