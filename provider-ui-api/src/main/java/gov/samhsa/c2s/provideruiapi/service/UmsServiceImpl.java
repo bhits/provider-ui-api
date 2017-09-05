@@ -10,7 +10,7 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.UmsUserDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.provideruiapi.service.dto.UserDto;
 import gov.samhsa.c2s.provideruiapi.service.exception.DuplicateIdentifierValueException;
-import gov.samhsa.c2s.provideruiapi.service.exception.UmsUserInterfaceException;
+import gov.samhsa.c2s.provideruiapi.service.exception.UmsClientInterfaceException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -77,7 +77,7 @@ public class UmsServiceImpl implements UmsService {
                 throw new DuplicateIdentifierValueException("This identifier value from the identifier system can only be assigned once.");
             } else {
                 log.error("Unexpected instance of FeignException has occurred", feignErr);
-                throw new UmsUserInterfaceException("An unknown error occurred while attempting to communicate with PCM service");
+                throw new UmsClientInterfaceException("An unknown error occurred while attempting to communicate with UMS service");
             }
         }
         return modelMapper.map(tempUmsUserDto, UserDto.class);
