@@ -9,6 +9,7 @@ import gov.samhsa.c2s.provideruiapi.infrastructure.dto.ConsentRevocationDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.provideruiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.provideruiapi.service.exception.DuplicateConsentException;
+import gov.samhsa.c2s.provideruiapi.service.exception.PcmUserInterfaceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -72,10 +73,15 @@ public class PcmServiceImpl implements PcmService {
         try {
             String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
             pcmClient.saveConsent(mrn, consentDto, LocaleContextHolder.getLocale(), createdBy, CREATED_BY_PATIENT);
-        } catch (FeignException feignErr) {
-            if (feignErr.status() == 409) {
-                log.info("The specified patient already has this consent", feignErr);
-                throw new DuplicateConsentException("Already created same consent.");
+        } catch (FeignException fe) {
+            int causedByStatus = fe.status();
+            switch(causedByStatus) {
+                case 409:
+                    log.info("The specified patient already has this consent", fe);
+                    throw new DuplicateConsentException("Already created same consent.");
+                default:
+                    log.error("Unexpected instance of FeignException has occurred", fe);
+                    throw new PcmUserInterfaceException("An unknown error occurred while attempting to communicate with PCM service");
             }
         }
     }
