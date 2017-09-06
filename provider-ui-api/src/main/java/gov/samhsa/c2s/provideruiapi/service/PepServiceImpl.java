@@ -51,24 +51,15 @@ public class PepServiceImpl implements PepService {
             log.debug("Invoking pep feign client - Start");
             accessResponseDto = pepClient.access(accessRequest);
             log.debug("Invoking pep feign client - End");
-        } catch (HystrixRuntimeException hystrixErr) {
-            Throwable causedBy = hystrixErr.getCause();
-
-            if (!(causedBy instanceof FeignException)) {
-                log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
-                throw new PepClientInterfaceException("An unknown error occurred while attempting to communicate with" +
-                        " PEP service", hystrixErr);
-            }
-
-            int causedByStatus = ((FeignException) causedBy).status();
-
+        } catch (FeignException fe) {
+            int causedByStatus = fe.status();
             switch (causedByStatus) {
                 case 404:
                     log.error("PEP client returned a 404 - NO Consent/Document Found REQUEST status" +
-                            " to PEP client", causedBy);
+                            " to PEP client", fe);
                     throw new NoDocumentFoundException("Invalid document was passed to DSS client");
                 default:
-                    log.error("PEP client returned an unexpected instance of FeignException", causedBy);
+                    log.error("PEP client returned an unexpected instance of FeignException", fe);
                     throw new PepClientInterfaceException("An unknown error occurred while attempting to communicate " +
                             "with" +
                             " PEP service");
