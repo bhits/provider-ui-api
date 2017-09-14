@@ -1,11 +1,9 @@
 package gov.samhsa.c2s.provideruiapi.service;
 
 
-import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import gov.samhsa.c2s.provideruiapi.infrastructure.PepClient;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.AccessRequestDto;
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.AccessResponseDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.PatientIdDto;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.SubjectPurposeOfUse;
 import gov.samhsa.c2s.provideruiapi.infrastructure.dto.XacmlRequestDto;
@@ -29,7 +27,7 @@ public class PepServiceImpl implements PepService {
     }
 
     @Override
-    public AccessResponseDto accessDocument(MultipartFile file,
+    public Object accessDocument(MultipartFile file,
                                             String recipientNpi,
                                             String intermediaryNpi,
                                             String purposeOfUse,
@@ -37,7 +35,7 @@ public class PepServiceImpl implements PepService {
                                             String patientIdExtension,
                                             String documentEncoding) {
         log.debug("PEP Service accessDocument Start");
-        AccessResponseDto accessResponseDto;
+        Object pepResponse;
         AccessRequestDto accessRequest = new AccessRequestDto();
         try {
             accessRequest.setDocument(file.getBytes());
@@ -49,7 +47,7 @@ public class PepServiceImpl implements PepService {
             accessRequest.setXacmlRequest(xacmlRequestDto);
             accessRequest.setDocumentEncoding(Optional.of(documentEncoding));
             log.debug("Invoking pep feign client - Start");
-            accessResponseDto = pepClient.access(accessRequest);
+            pepResponse = pepClient.access(accessRequest);
             log.debug("Invoking pep feign client - End");
         } catch (FeignException fe) {
             int causedByStatus = fe.status();
@@ -70,7 +68,7 @@ public class PepServiceImpl implements PepService {
         }
 
         log.debug("PEP Service accessDocument End");
-        return accessResponseDto;
+        return pepResponse;
 
     }
 }

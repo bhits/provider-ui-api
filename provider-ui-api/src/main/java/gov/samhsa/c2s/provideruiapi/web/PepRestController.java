@@ -1,6 +1,5 @@
 package gov.samhsa.c2s.provideruiapi.web;
 
-import gov.samhsa.c2s.provideruiapi.infrastructure.dto.AccessResponseDto;
 import gov.samhsa.c2s.provideruiapi.service.PepService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,7 @@ public class PepRestController {
     }
 
     @RequestMapping(value = "/access", method = RequestMethod.POST)
-    public AccessResponseDto access(@RequestParam(value = "file") MultipartFile file,
+    public Object access(@RequestParam(value = "file") MultipartFile file,
                                     @RequestParam(value = "recipientNpi") String recipientNpi,
                                     @RequestParam(value = "intermediaryNpi") String intermediaryNpi,
                                     @RequestParam(value = "purposeOfUse") String purposeOfUse,
