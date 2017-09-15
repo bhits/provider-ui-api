@@ -22,6 +22,8 @@ public class PepServiceImpl implements PepService {
 
     private final PepClient pepClient;
 
+    private static final boolean GET_SEGMENTED_DOC_IN_HTML_FORMAT = true;
+
     public PepServiceImpl(PepClient pepClient) {
         this.pepClient = pepClient;
     }
@@ -47,7 +49,7 @@ public class PepServiceImpl implements PepService {
             accessRequest.setXacmlRequest(xacmlRequestDto);
             accessRequest.setDocumentEncoding(Optional.of(documentEncoding));
             log.debug("Invoking pep feign client - Start");
-            pepResponse = pepClient.access(accessRequest);
+            pepResponse = pepClient.access(accessRequest, GET_SEGMENTED_DOC_IN_HTML_FORMAT);
             log.debug("Invoking pep feign client - End");
         } catch (FeignException fe) {
             int causedByStatus = fe.status();
