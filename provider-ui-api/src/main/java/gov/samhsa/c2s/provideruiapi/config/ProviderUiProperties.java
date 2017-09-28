@@ -16,10 +16,6 @@ public class ProviderUiProperties {
     @Valid
     private ProviderPermissions providerPermissions;
 
-    @NotNull
-    @Valid
-    private String defaultPatientIdentifierSystem;
-
     @Data
     public static class ProviderPermissions {
         private boolean consentSignEnabled = false;
