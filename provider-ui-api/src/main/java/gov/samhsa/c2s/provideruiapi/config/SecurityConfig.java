@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.PUT, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.OPTIONS, "/ums/users/**").access(hasScopes("providerUiApi.write"))
                         .antMatchers(HttpMethod.GET, "/ums/providers/profile/**").access(hasScopes("providerUiApi.read"))
+                        .antMatchers(HttpMethod.GET, "/ums/mrn/codeSystem/**").access(hasScopes("providerUiApi.read"))
 
                         .antMatchers(HttpMethod.POST, "/uaa/login").permitAll()
                         .antMatchers(HttpMethod.GET, "/ums/userCreationLookupInfo/**").permitAll()

@@ -30,4 +30,7 @@ public interface UmsLookupClient {
 
     @RequestMapping(value = "/identifierSystems", method = RequestMethod.GET)
     List<IdentifierSystemDto> getIdentifierSystem();
+
+    @RequestMapping(value = "/mrn/codeSystem", method = RequestMethod.GET)
+    String getMrnCodeSystem();
 }
