@@ -16,6 +16,15 @@ public class ProviderUiProperties {
     @Valid
     private ProviderPermissions providerPermissions;
 
+    @NotNull
+    @Valid
+    private Features features;
+
+    @Data
+    public static class Features {
+        private boolean demoDisclaimerEnabled;
+    }
+
     @Data
     public static class ProviderPermissions {
         private boolean consentSignEnabled = false;
