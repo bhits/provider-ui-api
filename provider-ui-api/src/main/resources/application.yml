@@ -15,7 +15,7 @@ security:
 c2s:
   provider-ui:
     features:
-      demo-disclaimer-enabled: true
+      demo-disclaimer-enabled: false
 
     provider-permissions:
       consent-sign-enabled: false
